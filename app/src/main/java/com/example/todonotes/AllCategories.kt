@@ -19,8 +19,10 @@ class AllCategories : Fragment() {
         val addCategory = view.findViewById<Button>(R.id.buttonAddCategory)
 
         addCategory.setOnClickListener {
-            requireActivity().supportFragmentManager.popBackStack()
-        }
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, AddCategory())
+                .addToBackStack(null)
+                .commit()        }
 
         return view
     }

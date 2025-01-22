@@ -29,12 +29,10 @@ class NotesMain : Fragment() {
         val lowPriorityList = view.findViewById<RecyclerView>(R.id.lowPriorityList)
 
         val highPriorityItems = listOf("Zamowic kontener" to "Remind 12:00 23.01",
-                                        "Spotkanie" to "Remind 13:00 25.01"
-                                        )
+                                        "Spotkanie" to "Remind 13:00 25.01")
         val mediumPriorityItems = listOf("Kupic wiadro" to "Remind 15:00 24.01")
         val lowPriorityItems = listOf("Spotkanie" to "Remind 15:00 24.01",
-                                        "Fryzjer" to "Remind 15:30 25.02"
-            )
+                                        "Fryzjer" to "Remind 15:30 25.02")
 
         highPriorityList.layoutManager = LinearLayoutManager(context)
         highPriorityList.adapter = PriorityAdapter(highPriorityItems, List(highPriorityItems.size) { 1 })

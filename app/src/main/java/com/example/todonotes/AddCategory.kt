@@ -9,37 +9,39 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 
-class AddNotes : Fragment() {
+
+class AddCategory : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_add_notes, container, false)
+        val view = inflater.inflate(R.layout.fragment_add_category, container, false)
 
-        val cancelButton = view.findViewById<Button>(R.id.cancelButton)
         val saveButton = view.findViewById<Button>(R.id.saveButton)
+        val cancelButton = view.findViewById<Button>(R.id.cancelButton)
 
-        cancelButton.setOnClickListener {
+        saveButton.setOnClickListener {
+            Toast.makeText(requireContext(), "Dodano poprawnie kategorię!", Toast.LENGTH_SHORT).show()
+            requireActivity().supportFragmentManager.popBackStack()
+        }
+
+        cancelButton.setOnClickListener{
             val builder = AlertDialog.Builder(requireContext())
             builder.setTitle("Potwierdzenie")
-            builder.setMessage("Czy na pewno chcesz anulować dodawanie notatek?")
+            builder.setMessage("Czy na pewno chcesz anulować dodawanie kategorii?")
 
             builder.setNegativeButton("Nie"){ dialog, _ ->
                 dialog.dismiss()
             }
 
             builder.setPositiveButton("Tak"){ _, _ ->
-                Toast.makeText(requireContext(), "Dodano poprawnie nową notatkę!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Dodano poprawnie kategorię!", Toast.LENGTH_SHORT).show()
                 requireActivity().supportFragmentManager.popBackStack()
             }
 
             var dialog = builder.create()
-            dialog.show()        }
-
-        saveButton.setOnClickListener{
-            Toast.makeText(requireContext(), "Dodano poprawnie nową notatkę!", Toast.LENGTH_SHORT).show()
-            requireActivity().supportFragmentManager.popBackStack()
+            dialog.show()
         }
 
         return view
