@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EditNote"
+    tools:context=".AddNotes"
     android:padding="16dp">
 
     <LinearLayout
@@ -133,5 +133,6 @@
             android:textColor="#FFFFFF"
             android:layout_marginStart="8dp" />
     </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
