@@ -6,10 +6,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import com.google.android.material.datepicker.CalendarConstraints
+import com.google.android.material.datepicker.DateValidatorPointForward
+import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.TimeFormat
 
 class AddNotes : Fragment() {
+
+    private var selectedDate: String? = null
+    private var selectedTime: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -19,6 +28,9 @@ class AddNotes : Fragment() {
 
         val cancelButton = view.findViewById<Button>(R.id.cancelButton)
         val saveButton = view.findViewById<Button>(R.id.saveButton)
+        val selectDateButton = view.findViewById<Button>(R.id.selectDateButton)
+        val selectTimeButton = view.findViewById<Button>(R.id.selectTimeButton)
+        val selectedDateTimeText = view.findViewById<TextView>(R.id.selectedDateTimeText)
 
         cancelButton.setOnClickListener {
             val builder = AlertDialog.Builder(requireContext())
@@ -42,8 +54,65 @@ class AddNotes : Fragment() {
             requireActivity().supportFragmentManager.popBackStack()
         }
 
+        selectDateButton.setOnClickListener {
+            showDatePicker(selectedDateTimeText)
+        }
+
+        selectTimeButton.setOnClickListener {
+            showTimePicker(selectedDateTimeText)
+        }
+
         return view
     }
+
+    private fun showDatePicker(selectedDateTimeText: TextView) {
+        val constraintsBuilder = CalendarConstraints.Builder()
+            .setValidator(DateValidatorPointForward.now())
+
+        val datePicker = MaterialDatePicker.Builder.datePicker()
+            .setTitleText("Wybierz datę")
+            .setCalendarConstraints(constraintsBuilder.build())
+            .build()
+
+        datePicker.addOnPositiveButtonClickListener { selection ->
+            selectedDate = datePicker.headerText
+            updateDateTimeDisplay(selectedDateTimeText)
+        }
+
+        datePicker.addOnNegativeButtonClickListener {
+            Toast.makeText(requireContext(), "Anulowano wybór daty", Toast.LENGTH_SHORT).show()
+        }
+
+        datePicker.show(parentFragmentManager, "DATE_PICKER")
+    }
+
+    private fun showTimePicker(selectedDateTimeText: TextView) {
+        val timePicker = MaterialTimePicker.Builder()
+            .setTimeFormat(TimeFormat.CLOCK_24H)
+            .setTitleText("Wybierz godzinę")
+            .build()
+
+        timePicker.addOnPositiveButtonClickListener {
+            val hour = timePicker.hour
+            val minute = timePicker.minute
+            selectedTime = String.format("%02d:%02d", hour, minute)
+            updateDateTimeDisplay(selectedDateTimeText)
+        }
+
+        timePicker.addOnNegativeButtonClickListener {
+            Toast.makeText(requireContext(), "Anulowano wybór godziny", Toast.LENGTH_SHORT).show()
+        }
+
+        timePicker.show(parentFragmentManager, "TIME_PICKER")
+    }
+
+    private fun updateDateTimeDisplay(selectedDateTimeText: TextView) {
+        val date = selectedDate ?: "Brak daty"
+        val time = selectedTime ?: "Brak godziny"
+        selectedDateTimeText.text = "Wybrana data i godzina: $date $time"
+    }
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
