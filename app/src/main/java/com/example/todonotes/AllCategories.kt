@@ -6,26 +6,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
+import android.widget.TextView
 
-class AddNotes : Fragment() {
-
+class AllCategories : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_add_notes, container, false)
+        val view = inflater.inflate(R.layout.fragment_all_categories, container, false)
 
-        val cancelButton = view.findViewById<Button>(R.id.cancelButton)
-        val saveButton = view.findViewById<Button>(R.id.saveButton)
+        val addCategory = view.findViewById<Button>(R.id.buttonAddCategory)
 
-        cancelButton.setOnClickListener {
-            requireActivity().supportFragmentManager.popBackStack()
-        }
-
-        saveButton.setOnClickListener{
+        addCategory.setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack()
         }
 
         return view
     }
+
 }

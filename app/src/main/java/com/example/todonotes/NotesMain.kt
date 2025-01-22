@@ -22,6 +22,7 @@ class NotesMain : Fragment() {
 
         val addNotesButton = view.findViewById<FloatingActionButton>(R.id.addNewNotes)
         val searchNotesButton = view.findViewById<ImageButton>(R.id.searchButton)
+        val allCategoriesButton = view.findViewById<ImageButton>(R.id.allCategories)
 
         val highPriorityList = view.findViewById<RecyclerView>(R.id.highPriorityList)
         val mediumPriorityList = view.findViewById<RecyclerView>(R.id.mediumPriorityList)
@@ -77,6 +78,13 @@ class NotesMain : Fragment() {
         searchNotesButton.setOnClickListener{
             parentFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, SearchNotes())
+                .addToBackStack(null)
+                .commit()
+        }
+
+        allCategoriesButton.setOnClickListener{
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, AllCategories())
                 .addToBackStack(null)
                 .commit()
         }
