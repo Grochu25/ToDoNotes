@@ -2,6 +2,7 @@ package com.example.todonotes
 
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
@@ -21,6 +22,15 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        val searchButton = findViewById<ImageView>(R.id.search_button)
+        searchButton.setOnClickListener {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.main, Search()) // R.id.fragment_container to kontener na fragmenty
+                .addToBackStack(null) // Dodanie do stosu powrotów
+                .commit()
+            }
+
         val highPriorityItems = listOf("Zamowic kontener" to "Remind 12:00 23.01", "Spotkanie" to "Remind 13:00 25.01")
         val mediumPriorityItems = listOf("Kupic wiadro" to "Remind 15:00 24.01")
         val lowPriorityItems = listOf("Spotkanie" to "Remind 15:00 24.01")
