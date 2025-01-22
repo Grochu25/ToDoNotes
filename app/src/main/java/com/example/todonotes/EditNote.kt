@@ -14,4 +14,11 @@ class EditNote : Fragment() {
     ): View? {
         return inflater.inflate(R.layout.fragment_edit_notes, container, false)
     }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        (requireActivity() as MainActivity).updateToolbarTitle("Edytuj notatkę")
+
+        (requireActivity() as MainActivity).setBackArrowVisibility(true)
+    }
 }

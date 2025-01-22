@@ -8,6 +8,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,6 +31,13 @@ class MainActivity : AppCompatActivity() {
                 .commit()
         }
 
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        setSupportActionBar(toolbar)
+
+//        supportActionBar?.title = "BackArrowToolbar"
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+//        (requireActivity() as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
+
 //        var db = Room.databaseBuilder(
 //            applicationContext,
 //            NotesDatabase::class.java, "notatki-database"
@@ -50,5 +58,17 @@ class MainActivity : AppCompatActivity() {
 //            }
 //        }
 //        Log.i("Database", notatki.toString())
+    }
+    override fun onSupportNavigateUp(): Boolean {
+        supportFragmentManager.popBackStack()
+        return true
+    }
+
+    fun setBackArrowVisibility(visible: Boolean) {
+        supportActionBar?.setDisplayHomeAsUpEnabled(visible)
+    }
+
+    fun updateToolbarTitle(title: String) {
+        supportActionBar?.title = title
     }
 }

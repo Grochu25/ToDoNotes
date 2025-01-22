@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 
 
 class AddCategory : Fragment() {
@@ -46,4 +47,12 @@ class AddCategory : Fragment() {
 
         return view
     }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        (requireActivity() as MainActivity).updateToolbarTitle("Dodaj kategorię")
+
+        (requireActivity() as MainActivity).setBackArrowVisibility(true)
+    }
+
 }

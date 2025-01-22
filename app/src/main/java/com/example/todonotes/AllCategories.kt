@@ -26,5 +26,11 @@ class AllCategories : Fragment() {
 
         return view
     }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
+        (requireActivity() as MainActivity).updateToolbarTitle("Wszystkie kategorie")
+
+        (requireActivity() as MainActivity).setBackArrowVisibility(true)
+    }
 }

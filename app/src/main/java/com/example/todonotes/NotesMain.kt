@@ -100,4 +100,11 @@ class NotesMain : Fragment() {
             section.layoutParams = params
         }
     }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        (requireActivity() as MainActivity).updateToolbarTitle("Twoje notatki")
+
+        (requireActivity() as MainActivity).setBackArrowVisibility(false)
+    }
 }

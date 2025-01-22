@@ -22,4 +22,11 @@ class SearchNotes : Fragment() {
 
         return view
     }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        (requireActivity() as MainActivity).updateToolbarTitle("Wyszukaj")
+
+        (requireActivity() as MainActivity).setBackArrowVisibility(true)
+    }
 }

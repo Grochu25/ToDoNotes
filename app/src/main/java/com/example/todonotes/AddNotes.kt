@@ -44,4 +44,11 @@ class AddNotes : Fragment() {
 
         return view
     }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        (requireActivity() as MainActivity).updateToolbarTitle("Dodaj notatkę")
+
+        (requireActivity() as MainActivity).setBackArrowVisibility(true)
+    }
 }
