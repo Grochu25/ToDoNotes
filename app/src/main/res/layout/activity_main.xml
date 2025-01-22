@@ -16,18 +16,21 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <Button
+        <ImageButton
             android:id="@+id/button1"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:background="@android:color/darker_gray"
+            android:src="@drawable/ic_search"
+            android:background="?attr/selectableItemBackground"
             android:layout_marginEnd="8dp" />
 
-        <Button
+        <ImageButton
             android:id="@+id/button2"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:background="@android:color/darker_gray" />
+            android:src="@drawable/ic_sort"
+            android:background="?attr/selectableItemBackground"
+            android:layout_marginEnd="8dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -44,52 +47,33 @@
             android:id="@+id/buttonAll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"
-            android:minWidth="0dp"
+            android:layout_marginEnd="8dp"
             android:text="wszystkie"
-            android:background="@android:drawable/btn_default" />
+            android:background="@drawable/rounded_button" />
 
         <Button
             android:id="@+id/buttonWork"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"
-            android:minWidth="0dp"
+            android:layout_marginEnd="8dp"
             android:text="praca"
-            android:background="@android:drawable/btn_default" />
+            android:background="@drawable/rounded_button" />
 
         <Button
             android:id="@+id/buttonHobby"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"
-            android:minWidth="0dp"
+            android:layout_marginEnd="8dp"
             android:text="hobby"
-            android:background="@android:drawable/btn_default" />
+            android:background="@drawable/rounded_button" />
 
         <Button
             android:id="@+id/buttonOther"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"
-            android:minWidth="0dp"
-            android:text="..."
-            android:background="@android:drawable/btn_default" />
+            android:text="inne"
+            android:background="@drawable/rounded_button" />
     </LinearLayout>
-
-
 
     <LinearLayout
         android:id="@+id/priorityContainer"
@@ -103,36 +87,90 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/fab">
 
-        <TextView
-            android:id="@+id/highPriority"
+        <LinearLayout
+            android:id="@+id/highPrioritySection"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:background="@android:color/white"
-            android:gravity="center"
-            android:text="wysokie"
-            android:textSize="16sp" />
+            android:orientation="vertical"
+            android:visibility="gone">
 
-        <!-- Sekcja średnie -->
-        <TextView
-            android:id="@+id/mediumPriority"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:background="@android:color/white"
-            android:gravity="center"
-            android:text="średnie"
-            android:textSize="16sp" />
+            <TextView
+                android:id="@+id/highPriority"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:gravity="start|top"
+                android:padding="16dp"
+                android:text="Wysokie"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#FF5722"/>
 
-        <TextView
-            android:id="@+id/lowPriority"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/high_priority_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/white"
+                android:cacheColorHint="@android:color/transparent"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/mediumPrioritySection"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:background="@android:color/white"
-            android:gravity="center"
-            android:text="niskie"
-            android:textSize="16sp" />
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/mediumPriority"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:gravity="start|top"
+                android:padding="16dp"
+                android:text="Średnie"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#E68D34"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/medium_priority_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/white"
+                android:cacheColorHint="@android:color/transparent"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lowPrioritySection"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/lowPriority"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:gravity="start|top"
+                android:padding="16dp"
+                android:text="Niskie"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#9E8D34" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/low_priority_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/white"
+                android:cacheColorHint="@android:color/transparent"
+                />
+        </LinearLayout>
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
