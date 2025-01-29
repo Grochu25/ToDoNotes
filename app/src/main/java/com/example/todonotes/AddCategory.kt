@@ -7,24 +7,45 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
+import android.widget.ViewSwitcher.ViewFactory
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
+import com.example.todonotes.databinding.FragmentAddCategoryBinding
+import com.example.todonotes.viewModel.AddCategoryViewModel
 
 
 class AddCategory : Fragment() {
+    private lateinit var addCategoryViewModel: AddCategoryViewModel
+    private lateinit var binding: FragmentAddCategoryBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_add_category, container, false)
+        addCategoryViewModel = ViewModelProvider(this, AddCategoryViewModel.Factory())[AddCategoryViewModel::class.java]
+
+        binding = FragmentAddCategoryBinding.inflate(inflater, container, false)
+        binding.addCategoryViewModel = addCategoryViewModel
+        binding.lifecycleOwner = viewLifecycleOwner
+
+        return binding.root
+    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         val saveButton = view.findViewById<Button>(R.id.saveButton)
         val cancelButton = view.findViewById<Button>(R.id.cancelButton)
 
         saveButton.setOnClickListener {
-            Toast.makeText(requireContext(), "Dodano poprawnie kategorię!", Toast.LENGTH_SHORT).show()
-            requireActivity().supportFragmentManager.popBackStack()
+            if(addCategoryViewModel.canAdd()) {
+                addCategoryViewModel.addCategory()
+                Toast.makeText(requireContext(), "Dodano poprawnie kategorię!", Toast.LENGTH_SHORT)
+                    .show()
+                requireActivity().supportFragmentManager.popBackStack()
+            }
+            else
+                Toast.makeText(requireContext(), "Kategoria o tej nazwie już istnieje", Toast.LENGTH_LONG).show()
         }
 
         cancelButton.setOnClickListener{
@@ -44,11 +65,6 @@ class AddCategory : Fragment() {
             var dialog = builder.create()
             dialog.show()
         }
-
-        return view
-    }
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
         (requireActivity() as MainActivity).updateToolbarTitle("Dodaj kategorię")
 

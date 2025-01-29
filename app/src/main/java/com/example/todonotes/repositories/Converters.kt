@@ -4,21 +4,26 @@ import android.graphics.Color
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.room.TypeConverter
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.temporal.ChronoField
 import java.util.Date
 
 enum class Priority{
     NISKA, SREDNIA, WYSOKA
 }
 
-class DateConverter{
+class LocalDateTimeConverter{
+    @RequiresApi(Build.VERSION_CODES.O)
     @TypeConverter
-    fun fromTimestamp(value: Long?): Date? {
-        return value?.let { Date(it) }
+    fun fromTimestamp(value: String?): LocalDateTime? {
+        return value?.let { LocalDateTime.parse(it) }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     @TypeConverter
-    fun dateToTimestamp(date: Date?): Long? {
-        return date?.time?.toLong()
+    fun dateToTimestamp(date: LocalDateTime?): String? {
+        return date?.toString()
     }
 }
 

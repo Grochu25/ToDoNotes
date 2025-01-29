@@ -1,13 +1,17 @@
 package com.example.todonotes
 
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
+import com.example.todonotes.repositories.Note
+import java.time.format.DateTimeFormatter
 
-class PriorityAdapter(private val items: List<Pair<String, String>>, private val priorities: List<Int>) :
+class PriorityAdapter(private val items: List<Note>, private val priorities: List<Int>, private var onClickListener: (Note) -> Unit) :
     RecyclerView.Adapter<PriorityAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -23,10 +27,16 @@ class PriorityAdapter(private val items: List<Pair<String, String>>, private val
         return ViewHolder(view)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val (title, remindDate) = items[position]
+        val title = items[position].title
+        val remindDate = "Przypomnienie: "+items[position].date?.format(DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy"))
         holder.remindText.text = title
         holder.remindDateText.text = remindDate
+
+        holder.itemView.setOnClickListener{
+            onClickListener(items[position])
+        }
 
         holder.starButton.setOnClickListener {
             val currentColor = holder.starButton.tag as? Boolean ?: false

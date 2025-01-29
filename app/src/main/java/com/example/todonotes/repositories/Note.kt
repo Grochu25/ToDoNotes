@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import java.util.Date
+import java.time.LocalDateTime
 
 @Entity(
     foreignKeys = [
@@ -21,7 +21,7 @@ data class Note(
     @PrimaryKey val noteId: Int,
     @ColumnInfo(name = "title") val title: String?,
     @ColumnInfo(name = "desc") val desc: String?,
-    @ColumnInfo(name = "date") val date: Date?,
+    @ColumnInfo(name = "date") val date: LocalDateTime?,
     @ColumnInfo(name = "priority") val priority: Priority,
     @ColumnInfo(name = "categoryId") val categoryId: Int,
     @ColumnInfo(name = "isFavorite") val isFavorite: Boolean,

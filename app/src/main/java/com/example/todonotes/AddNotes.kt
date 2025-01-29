@@ -1,21 +1,33 @@
 package com.example.todonotes
 
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.ViewModelProvider
+import com.example.todonotes.databinding.FragmentAddNotesBinding
+import com.example.todonotes.viewModel.AddNotesViewModel
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class AddNotes : Fragment() {
+    private lateinit var addNotesViewModel: AddNotesViewModel
+    private lateinit var binding: FragmentAddNotesBinding
 
     private var selectedDate: String? = null
     private var selectedTime: String? = null
@@ -24,13 +36,24 @@ class AddNotes : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_add_notes, container, false)
+        addNotesViewModel = ViewModelProvider(this, AddNotesViewModel.Factory())[AddNotesViewModel::class.java]
 
-        val cancelButton = view.findViewById<Button>(R.id.cancelButton)
-        val saveButton = view.findViewById<Button>(R.id.saveButton)
-        val selectDateButton = view.findViewById<Button>(R.id.selectDateButton)
-        val selectTimeButton = view.findViewById<Button>(R.id.selectTimeButton)
-        val selectedDateTimeText = view.findViewById<TextView>(R.id.selectedDateTimeText)
+        binding = FragmentAddNotesBinding.inflate(inflater, container, false)
+        binding.addNotesViewModel = addNotesViewModel
+        binding.lifecycleOwner = viewLifecycleOwner
+
+        return binding.root
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val cancelButton = requireActivity().findViewById<Button>(R.id.cancelButton)
+        val saveButton = requireActivity().findViewById<Button>(R.id.saveButton)
+        val selectDateButton = requireActivity().findViewById<Button>(R.id.selectDateButton)
+        val selectTimeButton = requireActivity().findViewById<Button>(R.id.selectTimeButton)
+        val selectedDateTimeText = requireActivity().findViewById<TextView>(R.id.selectedDateTimeText)
 
         cancelButton.setOnClickListener {
             val builder = AlertDialog.Builder(requireContext())
@@ -50,6 +73,7 @@ class AddNotes : Fragment() {
             dialog.show()        }
 
         saveButton.setOnClickListener{
+            addNotesViewModel.saveNoteToDatabase()
             Toast.makeText(requireContext(), "Dodano poprawnie nową notatkę!", Toast.LENGTH_SHORT).show()
             requireActivity().supportFragmentManager.popBackStack()
         }
@@ -62,9 +86,12 @@ class AddNotes : Fragment() {
             showTimePicker(selectedDateTimeText)
         }
 
-        return view
+        (requireActivity() as MainActivity).updateToolbarTitle("Dodaj notatkę")
+
+        (requireActivity() as MainActivity).setBackArrowVisibility(true)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun showDatePicker(selectedDateTimeText: TextView) {
         val constraintsBuilder = CalendarConstraints.Builder()
             .setValidator(DateValidatorPointForward.now())
@@ -77,6 +104,7 @@ class AddNotes : Fragment() {
         datePicker.addOnPositiveButtonClickListener { selection ->
             selectedDate = datePicker.headerText
             updateDateTimeDisplay(selectedDateTimeText)
+            addNotesViewModel.date.value = selectedDate
         }
 
         datePicker.addOnNegativeButtonClickListener {
@@ -97,6 +125,8 @@ class AddNotes : Fragment() {
             val minute = timePicker.minute
             selectedTime = String.format("%02d:%02d", hour, minute)
             updateDateTimeDisplay(selectedDateTimeText)
+            Log.v("mango", selectedTime.toString())
+            addNotesViewModel.time.value = selectedTime
         }
 
         timePicker.addOnNegativeButtonClickListener {
@@ -112,12 +142,4 @@ class AddNotes : Fragment() {
         selectedDateTimeText.text = "Wybrana data i godzina: $date $time"
     }
 
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        (requireActivity() as MainActivity).updateToolbarTitle("Dodaj notatkę")
-
-        (requireActivity() as MainActivity).setBackArrowVisibility(true)
-    }
 }

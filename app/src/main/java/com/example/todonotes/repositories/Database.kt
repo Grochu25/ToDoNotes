@@ -23,7 +23,7 @@ import androidx.room.TypeConverters
 import java.util.Date
 
 @Database(entities = [Note::class, Category::class], version = 1)
-@TypeConverters(DateConverter::class, ColorConverter::class, PriorityConverter::class)
+@TypeConverters(LocalDateTimeConverter::class, ColorConverter::class, PriorityConverter::class)
 abstract class NotesDatabase : RoomDatabase() {
     abstract fun noteDao(): NoteDao
     abstract fun categoryDao(): CategoryDao
