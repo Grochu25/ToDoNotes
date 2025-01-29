@@ -1,5 +1,6 @@
 package com.example.todonotes
 
+import android.appwidget.AppWidgetManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -9,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.RemoteViews
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
@@ -73,9 +75,24 @@ class AddNotes : Fragment() {
             dialog.show()        }
 
         saveButton.setOnClickListener{
-            addNotesViewModel.saveNoteToDatabase()
-            Toast.makeText(requireContext(), "Dodano poprawnie nową notatkę!", Toast.LENGTH_SHORT).show()
-            requireActivity().supportFragmentManager.popBackStack()
+            if(selectedDate == null || selectedTime == null)
+            {
+                Toast.makeText(requireContext(), "Nie ustalono daty i godziny!", Toast.LENGTH_LONG).show()
+            }
+            else if(addNotesViewModel.title.value!! == "")
+            {
+                Toast.makeText(requireContext(), "Tytuł nie może być pusty", Toast.LENGTH_LONG).show()
+            }
+            else {
+                addNotesViewModel.saveNoteToDatabase()
+
+                Toast.makeText(
+                    requireContext(),
+                    "Dodano poprawnie nową notatkę!",
+                    Toast.LENGTH_SHORT
+                ).show()
+                requireActivity().supportFragmentManager.popBackStack()
+            }
         }
 
         selectDateButton.setOnClickListener {

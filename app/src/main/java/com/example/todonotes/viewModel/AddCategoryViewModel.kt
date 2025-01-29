@@ -1,5 +1,6 @@
 package com.example.todonotes.viewModel
 
+import android.appwidget.AppWidgetManager
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

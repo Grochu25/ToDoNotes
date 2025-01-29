@@ -1,5 +1,6 @@
 package com.example.todonotes.repositories
 
+import android.content.Context
 import android.graphics.Color
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -16,6 +17,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.PrimaryKey
 import androidx.room.Query
 import androidx.room.Relation
+import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.Transaction
 import androidx.room.TypeConverter
@@ -27,4 +29,22 @@ import java.util.Date
 abstract class NotesDatabase : RoomDatabase() {
     abstract fun noteDao(): NoteDao
     abstract fun categoryDao(): CategoryDao
+
+    companion object {
+        @Volatile
+        private var instance: NotesDatabase? = null //for singleton
+
+        fun getInstance(context: Context) : NotesDatabase {
+            return instance ?: synchronized(this) {
+                instance ?: buildDatabase(context).also { instance = it }
+            }
+        }
+
+        private fun buildDatabase(context: Context): NotesDatabase {
+            return Room.databaseBuilder(
+                context,
+                NotesDatabase::class.java, "notatki-database"
+            ).allowMainThreadQueries().build()
+        }
+    }
 }

@@ -14,6 +14,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.Database
 import androidx.room.Room
 import com.example.todonotes.repositories.Category
 import com.example.todonotes.repositories.NotesDatabase
@@ -42,16 +43,14 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 //        (requireActivity() as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
-        var db = Room.databaseBuilder(
-            applicationContext,
-            NotesDatabase::class.java, "notatki-database"
-        ).allowMainThreadQueries().build()
+        var db = NotesDatabase.getInstance(this)
 
         Dependencies.noteDao = db.noteDao()
         Dependencies.categoryDao = db.categoryDao()
 
-        if(db.categoryDao().getAll().isEmpty())
-            Dependencies.categoryDao.insertAll(Category(0, "Szkoła", Color.RED))
+
+//        if(db.categoryDao().getAll().isEmpty())
+//            Dependencies.categoryDao.insertAll(Category(0, "Szkoła", Color.RED))
         val kategorie: List<Category> = Dependencies.categoryDao.getAll()
 //
 //        Log.i("Database", kategorie.toString())
