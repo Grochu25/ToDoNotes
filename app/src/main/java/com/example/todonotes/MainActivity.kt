@@ -134,7 +134,7 @@ class MainActivity : AppCompatActivity() {
                     PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
                 var alarmManager = applicationContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
                 Log.d("AlarmManager", "Ustawiam alarm na: "+(System.currentTimeMillis()+10000).toString())
-                alarmManager.setExact(
+                alarmManager.setExactAndAllowWhileIdle(
                     AlarmManager.RTC_WAKEUP,
                     System.currentTimeMillis()+10000,
                     pendingIntent)
@@ -142,7 +142,7 @@ class MainActivity : AppCompatActivity() {
                 val alarmUp = (PendingIntent.getBroadcast(
                     applicationContext, 0,
                     Intent("com.example.todonotes.ALARM_ACTION"),
-                    PendingIntent.FLAG_IMMUTABLE) != null)
+                    PendingIntent.FLAG_NO_CREATE or PendingIntent.FLAG_IMMUTABLE) != null)
 
                 if (alarmUp) {
                     Log.d("mango", "Alarm is already active")
