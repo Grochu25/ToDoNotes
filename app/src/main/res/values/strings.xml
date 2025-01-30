@@ -7,4 +7,8 @@
     <string name="app_widget_description">This is an app widget description</string>
     <string name="empty_view_text">Brak ważnych notatek</string>
     <string name="important_notes">Najważniejsze notatki</string>
+    <string name="sort_by_date_asc">Data rosnąco</string>
+    <string name="sort_by_date_desc">Data malejąco</string>
+    <string name="sort_by_name_asc">Nazwa rosnąco</string>
+    <string name="sort_by_name_desc">Nazwa malejąco</string>
 </resources>
