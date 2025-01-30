@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
@@ -44,7 +45,6 @@ class NotesMain : Fragment() {
         val highPriorityList = view.findViewById<RecyclerView>(R.id.highPriorityList)
         val mediumPriorityList = view.findViewById<RecyclerView>(R.id.mediumPriorityList)
         val lowPriorityList = view.findViewById<RecyclerView>(R.id.lowPriorityList)
-
 
         highPriorityList.layoutManager = LinearLayoutManager(context)
         highPriorityList.adapter = PriorityAdapter(viewModel.highPriorityItems.value!!, List(viewModel.highPriorityItems.value!!.size) { 1 }, noteDetails)

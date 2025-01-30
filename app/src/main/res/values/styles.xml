@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="ClickableCursor">
+        <item name="android:cursorVisible">true</item>
+    </style>
+</resources>
