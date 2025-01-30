@@ -19,7 +19,7 @@ interface NoteDao {
     fun getAllByPriority(priority: Priority): List<Note>
 
     @Transaction
-    @Query("SELECT * FROM note WHERE note.title == :title Order by note.priority DESC")
+    @Query("SELECT * FROM note WHERE note.title LIKE :title Order by note.priority DESC")
     fun getNoteByTitle(title: String): List<Note>
 
     @Transaction
@@ -31,8 +31,20 @@ interface NoteDao {
     fun getAllOrderedByPrioFavTitle(): List<NoteCategory>
 
     @Transaction
-    @Query("SELECT * FROM note, category WHERE note.categoryId == category.categoryId ORDER BY priority, isFavorite, date ASC")
-    fun getAllOrderedByPrioFavDate(): List<NoteCategory>
+    @Query("SELECT * FROM note WHERE note.priority == :priority ORDER BY isFavorite, date ASC")
+    fun getAllWithOrderedByFavDateASC(priority: Priority): List<Note>
+
+    @Transaction
+    @Query("SELECT * FROM note WHERE note.priority == :priority ORDER BY isFavorite, date DESC")
+    fun getAllWithOrderedByFavDateDESC(priority: Priority): List<Note>
+
+    @Transaction
+    @Query("SELECT * FROM note WHERE note.priority == :priority ORDER BY isFavorite, title ASC")
+    fun getAllWithOrderedByFavTitleASC(priority: Priority): List<Note>
+
+    @Transaction
+    @Query("SELECT * FROM note WHERE note.priority == :priority ORDER BY isFavorite, title DESC")
+    fun getAllWithOrderedByFavTitleDESC(priority: Priority): List<Note>
 
     @Transaction
     @Query("SELECT category.name, COUNT(*) AS count FROM note, category WHERE note.categoryId == category.categoryId GROUP BY category.name")

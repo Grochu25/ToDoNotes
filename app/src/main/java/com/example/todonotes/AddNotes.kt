@@ -1,6 +1,12 @@
 package com.example.todonotes
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -16,6 +22,10 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.ViewModelProvider
 import com.example.todonotes.databinding.FragmentAddNotesBinding
 import com.example.todonotes.viewModel.AddNotesViewModel
@@ -24,9 +34,16 @@ import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
+import android.Manifest
+import android.annotation.SuppressLint
+import android.app.AlarmManager
+import android.app.Notification
+import android.content.Context.ALARM_SERVICE
+import android.icu.util.Calendar
+import androidx.core.content.ContextCompat
+import java.time.Instant
 
+@RequiresApi(Build.VERSION_CODES.O)
 class AddNotes : Fragment() {
     private lateinit var addNotesViewModel: AddNotesViewModel
     private lateinit var binding: FragmentAddNotesBinding
@@ -47,7 +64,7 @@ class AddNotes : Fragment() {
         return binding.root
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -85,7 +102,9 @@ class AddNotes : Fragment() {
             }
             else {
                 addNotesViewModel.saveNoteToDatabase()
-
+                val cal = Calendar.getInstance()
+                cal.set(2025,1,30,15, addNotesViewModel.time.value!!.substring(3,5).toInt())
+                (requireActivity() as MainActivity).addNotification(addNotesViewModel.title.value!!,cal)
                 Toast.makeText(
                     requireContext(),
                     "Dodano poprawnie nową notatkę!",
@@ -107,6 +126,7 @@ class AddNotes : Fragment() {
 
         (requireActivity() as MainActivity).setBackArrowVisibility(true)
     }
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun showDatePicker(selectedDateTimeText: TextView) {

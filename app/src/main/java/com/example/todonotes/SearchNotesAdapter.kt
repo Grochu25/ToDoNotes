@@ -5,30 +5,36 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todonotes.repositories.Note
 import java.time.format.DateTimeFormatter
 
 class SearchNotesAdapter(
-    private val items: List<Note>,
+    private val items: MutableList<Note>,
     private val onClickListener: (Note) -> Unit
-) : RecyclerView.Adapter<PriorityAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<SearchNotesAdapter.ViewHolder>() {
 
     private var filteredList: List<Note> = items
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view){
-        val searchEditText: EditText = view.findViewById(R.id.search_edit_text)
+        val remindText: TextView = view.findViewById(R.id.titleText)
+        val remindDateText: TextView = view.findViewById(R.id.remindDateText)
+        val starButton: ImageButton = view.findViewById(R.id.starButton)
+        val container: View = view
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PriorityAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.priority_item, parent, false)
-        return PriorityAdapter.ViewHolder(view)
+        return ViewHolder(view)
     }
 
+
     @RequiresApi(Build.VERSION_CODES.O)
-    override fun onBindViewHolder(holder: PriorityAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val note = filteredList[position]
 
         holder.remindText.text = note.title

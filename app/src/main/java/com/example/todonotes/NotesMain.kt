@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
@@ -23,10 +22,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 @RequiresApi(Build.VERSION_CODES.O)
 class NotesMain : Fragment() {
-    private lateinit var viewModel: NotesMainViewModel
-    private lateinit var highPriorityAdapter: PriorityAdapter
-    private lateinit var mediumPriorityAdapter: PriorityAdapter
-    private lateinit var lowPriorityAdapter: PriorityAdapter
+    private lateinit var notesMainViewModel: NotesMainViewModel
 
     private var isSortedByDate = true // default we sort by date
 
@@ -35,7 +31,7 @@ class NotesMain : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_notes_main, container, false)
-        viewModel = ViewModelProvider(this, NotesMainViewModel.Factory())[NotesMainViewModel::class.java]
+        notesMainViewModel = ViewModelProvider(this, NotesMainViewModel.Factory())[NotesMainViewModel::class.java]
 
         val addNotesButton = view.findViewById<FloatingActionButton>(R.id.addNewNotes)
         val searchNotesButton = view.findViewById<ImageButton>(R.id.searchButton)
@@ -47,33 +43,15 @@ class NotesMain : Fragment() {
         val lowPriorityList = view.findViewById<RecyclerView>(R.id.lowPriorityList)
 
         highPriorityList.layoutManager = LinearLayoutManager(context)
-        highPriorityList.adapter = PriorityAdapter(viewModel.highPriorityItems.value!!, List(viewModel.highPriorityItems.value!!.size) { 1 }, noteDetails)
+        highPriorityList.adapter = PriorityAdapter(notesMainViewModel.highPriorityItems.value!!, List(notesMainViewModel.highPriorityItems.value!!.size) { 1 }, noteDetails)
 
         mediumPriorityList.layoutManager = LinearLayoutManager(context)
-        mediumPriorityList.adapter = PriorityAdapter(viewModel.mediumPriorityItems.value!!, List(viewModel.mediumPriorityItems.value!!.size) { 2 }, noteDetails)
+        mediumPriorityList.adapter = PriorityAdapter(notesMainViewModel.mediumPriorityItems.value!!, List(notesMainViewModel.mediumPriorityItems.value!!.size) { 2 }, noteDetails)
 
         lowPriorityList.layoutManager = LinearLayoutManager(context)
-        lowPriorityList.adapter = PriorityAdapter(viewModel.lowPriorityItems.value!!, List(viewModel.lowPriorityItems.value!!.size) { 3 }, noteDetails)
+        lowPriorityList.adapter = PriorityAdapter(notesMainViewModel.lowPriorityItems.value!!, List(notesMainViewModel.lowPriorityItems.value!!.size) { 3 }, noteDetails)
 
-        val highPrioritySection = view.findViewById<LinearLayout>(R.id.highPrioritySection)
-        val mediumPrioritySection = view.findViewById<LinearLayout>(R.id.mediumPrioritySection)
-        val lowPrioritySection = view.findViewById<LinearLayout>(R.id.lowPrioritySection)
-
-        val visibleSections = mutableListOf<Pair<View, List<Pair<String, String>>>>()
-
-        if (viewModel.highPriorityItems.value!!.isNotEmpty()) {
-            highPrioritySection.visibility = View.VISIBLE
-        }
-
-        if (viewModel.highPriorityItems.value!!.isNotEmpty()) {
-            mediumPrioritySection.visibility = View.VISIBLE
-        }
-
-        if (viewModel.highPriorityItems.value!!.isNotEmpty()) {
-            lowPrioritySection.visibility = View.VISIBLE
-        }
-
-        adjustSectionWeights(visibleSections)
+        sectionsVisibility()
 
         addNotesButton.setOnClickListener {
             parentFragmentManager.beginTransaction()
@@ -101,6 +79,29 @@ class NotesMain : Fragment() {
         return view
     }
 
+    private fun sectionsVisibility()
+    {
+        val highPrioritySection = view?.findViewById<LinearLayout>(R.id.highPrioritySection)
+        val mediumPrioritySection = view?.findViewById<LinearLayout>(R.id.mediumPrioritySection)
+        val lowPrioritySection = view?.findViewById<LinearLayout>(R.id.lowPrioritySection)
+
+        val visibleSections = mutableListOf<Pair<View, List<Pair<String, String>>>>()
+
+        if (notesMainViewModel.highPriorityItems.value!!.isNotEmpty()) {
+            highPrioritySection?.visibility = View.VISIBLE
+        }
+
+        if (notesMainViewModel.mediumPriorityItems.value!!.isNotEmpty()) {
+            mediumPrioritySection?.visibility = View.VISIBLE
+        }
+
+        if (notesMainViewModel.lowPriorityItems.value!!.isNotEmpty()) {
+            lowPrioritySection?.visibility = View.VISIBLE
+        }
+
+        adjustSectionWeights(visibleSections)
+    }
+
     private fun adjustSectionWeights(sections: List<Pair<View, List<Pair<String, String>>>>) {
         val totalSections = sections.size
         val weight = 1f / totalSections
@@ -123,18 +124,23 @@ class NotesMain : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        viewModel.reloadDataFromDB()
+
+        resetAdapters()
+
+        sectionsVisibility()
+    }
+
+    fun resetAdapters(){
+        notesMainViewModel.reloadDataFromDB()
 
         val highPriorityList = requireActivity().findViewById<RecyclerView>(R.id.highPriorityList)
         val mediumPriorityList = requireActivity().findViewById<RecyclerView>(R.id.mediumPriorityList)
         val lowPriorityList = requireActivity().findViewById<RecyclerView>(R.id.lowPriorityList)
 
-        highPriorityList.adapter = PriorityAdapter(viewModel.highPriorityItems.value!!, List(viewModel.highPriorityItems.value!!.size) { 1 }, noteDetails)
-        mediumPriorityList.adapter = PriorityAdapter(viewModel.mediumPriorityItems.value!!, List(viewModel.mediumPriorityItems.value!!.size) { 2 }, noteDetails)
-        lowPriorityList.adapter = PriorityAdapter(viewModel.lowPriorityItems.value!!, List(viewModel.lowPriorityItems.value!!.size) { 3 }, noteDetails)
-
+        highPriorityList.adapter = PriorityAdapter(notesMainViewModel.highPriorityItems.value!!, List(notesMainViewModel.highPriorityItems.value!!.size) { 1 }, noteDetails)
+        mediumPriorityList.adapter = PriorityAdapter(notesMainViewModel.mediumPriorityItems.value!!, List(notesMainViewModel.mediumPriorityItems.value!!.size) { 2 }, noteDetails)
+        lowPriorityList.adapter = PriorityAdapter(notesMainViewModel.lowPriorityItems.value!!, List(notesMainViewModel.lowPriorityItems.value!!.size) { 3 }, noteDetails)
     }
-
 
     val noteDetails: (Note) -> Unit =
     {
@@ -151,25 +157,29 @@ class NotesMain : Fragment() {
         popupMenu.setOnMenuItemClickListener { item: MenuItem ->
             when (item.itemId) {
                 R.id.sort_by_date_asc -> {
-                    isSortedByDate = true
-                    // there will be connect with mvvm
+                    notesMainViewModel.sortType = NotesMainViewModel.SortType.DATE_ASC
+                    resetAdapters()
                     true
                 }
                 R.id.sort_by_date_desc -> {
                     isSortedByDate = false
-                    // there will be connect with mvvm
+                    notesMainViewModel.sortType = NotesMainViewModel.SortType.DATE_DESC
+                    resetAdapters()
                     true
                 }
                 R.id.sort_by_name_asc -> {
-                    // there will be connect with mvvm
+                    notesMainViewModel.sortType = NotesMainViewModel.SortType.NAME_ASC
+                    resetAdapters()
                     true
                 }
                 R.id.sort_by_name_desc -> {
-                    // there will be connect with mvvm
+                    notesMainViewModel.sortType = NotesMainViewModel.SortType.NAME_DESC
+                    resetAdapters()
                     true
                 }
                 else -> false
             }
+
         }
         popupMenu.show()
     }

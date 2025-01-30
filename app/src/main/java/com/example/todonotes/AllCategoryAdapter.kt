@@ -1,21 +1,19 @@
 package com.example.todonotes
 
-import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todonotes.repositories.Category
 
-class AddCategoryAdapter(
+class AllCategoryAdapter(
     private val items: MutableList<Category>,
     private val taskCounts: Map<String, Int>,
-    private val onClickListener: (Category) -> Unit,
+    //private val onClickListener: (Category) -> Unit,
     private val onDeleteClick: (Category) -> Unit
-) : RecyclerView.Adapter<AddCategoryAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<AllCategoryAdapter.ViewHolder>() {
 
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view){
@@ -39,14 +37,15 @@ class AddCategoryAdapter(
         holder.taskCounter.text = taskCounts[category.name]?.toString() ?: "0"
 
         holder.itemView.setOnClickListener{
-            onClickListener(items[position])
+            //onClickListener(items[position])
         }
 
         // temporarily skip the border color
 
-//        holder.deleteButton.setOnClickListener{
-//
-//        }
+        holder.deleteButton.setOnClickListener{
+            onDeleteClick(items[position])
+            notifyDataSetChanged()
+        }
 
 //        holder.editButton.setOnClickListener{
 //                 ->    AddCategory

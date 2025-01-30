@@ -34,9 +34,9 @@ class ImportantNoteWidget : AppWidgetProvider() {
                 setEmptyView(R.id.widget_list_view, R.id.empty_view)
             }
 
-            val intent2 = Intent(context, MainActivity::class.java)
-            val pendingIntent = PendingIntent.getActivity(context, 0, intent2, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+            val pendingIntent = PendingIntent.getActivity(context, 0, Intent(context, MainActivity::class.java), PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
             views.setOnClickPendingIntent(R.id.widget_content, pendingIntent)
+            views.setPendingIntentTemplate(R.id.widget_list_view,pendingIntent)
 
             appWidgetManager.updateAppWidget(appWidgetId, views)
         }
