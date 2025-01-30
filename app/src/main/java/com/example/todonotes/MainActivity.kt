@@ -14,28 +14,17 @@ import android.icu.util.Calendar
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
-import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Database
-import androidx.room.Room
 import com.example.todonotes.repositories.Category
 import com.example.todonotes.repositories.NotesDatabase
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.time.Instant
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -73,18 +62,9 @@ class MainActivity : AppCompatActivity() {
             Dependencies.categoryDao.insertAll(Category(0, "Szkoła", Color.RED))
         val kategorie: List<Category> = Dependencies.categoryDao.getAll()
 
-
-//        Log.i("Database", kategorie.toString())
-//
-//        val notatkiDao = db.noteDao()
-//        notatkiDao.insertAll(Note(0, "Zrób coś", "Coś", Date(2025, 1, 12), Priority.WYSOKA, 0, true))
-//        val notatki: List<NoteCategory> = notatkiDao.getAll()
-//        for(el in notatki){
-//            for(el2 in el.notes){
-//                Log.i("Database", el2.noteId.toString()+": "+el2.title+", "+el2.desc+", "+el2.date.toString()+", "+el2.priority+", "+el.category.name+": "+el.category.color.toString()+", "+el2.isFavorite)
-//            }
-//        }
-//        Log.i("Database", notatki.toString())
+//        val cal = Calendar.getInstance()
+//        Log.v("mango",cal.toString())
+//        addNotification("KOTLET",cal)
     }
     override fun onSupportNavigateUp(): Boolean {
         supportFragmentManager.popBackStack()
@@ -134,28 +114,46 @@ class MainActivity : AppCompatActivity() {
     {
 
         when {
-            ContextCompat.checkSelfPermission(
+            (ContextCompat.checkSelfPermission(
                 applicationContext,
-                Manifest.permission.POST_NOTIFICATIONS
-            ) == PackageManager.PERMISSION_GRANTED -> {
-//                NotificationManagerCompat.from(requireContext()).notify(Instant.now().toEpochMilli().toInt(), builder.build())
+                Manifest.permission.USE_EXACT_ALARM
+            )+ContextCompat.checkSelfPermission(
+                applicationContext,
+                Manifest.permission.POST_NOTIFICATIONS)) == PackageManager.PERMISSION_GRANTED -> {
                 Log.v("mango", "BIGGER")
-                var intent = Intent(applicationContext, Notification::class.java)
+                var intent = Intent(applicationContext, Notification::class.java).apply {
+                    action = "com.example.todonotes.ALARM_ACTION"
+                }
+
+                Intent("com.example.todonotes.ALARM_ACTION")
+
                 intent.putExtra(NOTIFICATION_ID, Instant.now().toEpochMilli().toInt())
                 intent.putExtra(NOTIFICATION_TITLE, "Przypomnienie")
                 intent.putExtra(NOTIFICATION_MESSAGE, title)
-                var pendingIntent = PendingIntent.getBroadcast(applicationContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
-                var alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
-                alarmManager.setExactAndAllowWhileIdle(
+                var pendingIntent = PendingIntent.getBroadcast(this, 0, intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+                var alarmManager = applicationContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+                Log.d("AlarmManager", "Ustawiam alarm na: "+(System.currentTimeMillis()+10000).toString())
+                alarmManager.setExact(
                     AlarmManager.RTC_WAKEUP,
                     System.currentTimeMillis()+10000,
                     pendingIntent)
 
+                val alarmUp = (PendingIntent.getBroadcast(
+                    applicationContext, 0,
+                    Intent("com.example.todonotes.ALARM_ACTION"),
+                    PendingIntent.FLAG_IMMUTABLE) != null)
+
+                if (alarmUp) {
+                    Log.d("mango", "Alarm is already active")
+                }
+
             }
             ActivityCompat.shouldShowRequestPermissionRationale(
-                this, Manifest.permission.POST_NOTIFICATIONS) -> {
+                this, Manifest.permission.USE_EXACT_ALARM) -> {
             }
             else -> {
+                requestPermissionLauncher.launch(Manifest.permission.USE_EXACT_ALARM)
                 requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
             }}
     }

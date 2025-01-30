@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import java.time.Instant
@@ -17,13 +18,15 @@ const val NOTIFICATION_MESSAGE = "notifMessage"
 
 class Notifications : BroadcastReceiver()
 {
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onReceive(context: Context, intent: Intent) {
         val id = intent.getIntExtra(NOTIFICATION_ID, 1)
-        val message = intent.getStringExtra(NOTIFICATION_MESSAGE).toString()
-        val title = intent.getStringExtra(NOTIFICATION_TITLE).toString()
+        val message = intent.getStringExtra(NOTIFICATION_MESSAGE)
+        val title = intent.getStringExtra(NOTIFICATION_TITLE)
 
-        val pendingIntent: PendingIntent = PendingIntent.getActivity(context, 0, Intent(context, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE)
+        Log.d("Notifications", "Received notification: $title, $message, $id")
+
+        val pendingIntent: PendingIntent = PendingIntent.getActivity(context, 0,
+            Intent(context, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE)
 
         val notification =
             NotificationCompat.Builder(context, CHANNEL_ID).setSmallIcon(R.drawable.full_star)

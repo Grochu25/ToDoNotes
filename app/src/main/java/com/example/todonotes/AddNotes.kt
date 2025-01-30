@@ -74,6 +74,10 @@ class AddNotes : Fragment() {
         val selectTimeButton = requireActivity().findViewById<Button>(R.id.selectTimeButton)
         val selectedDateTimeText = requireActivity().findViewById<TextView>(R.id.selectedDateTimeText)
 
+        val cal = Calendar.getInstance()
+        cal.set(2025,1,30,15, 0)
+        (requireActivity() as MainActivity).addNotification("MIGRACJA",cal)
+
         cancelButton.setOnClickListener {
             val builder = AlertDialog.Builder(requireContext())
             builder.setTitle("Potwierdzenie")
@@ -102,9 +106,7 @@ class AddNotes : Fragment() {
             }
             else {
                 addNotesViewModel.saveNoteToDatabase()
-                val cal = Calendar.getInstance()
-                cal.set(2025,1,30,15, addNotesViewModel.time.value!!.substring(3,5).toInt())
-                (requireActivity() as MainActivity).addNotification(addNotesViewModel.title.value!!,cal)
+
                 Toast.makeText(
                     requireContext(),
                     "Dodano poprawnie nową notatkę!",
