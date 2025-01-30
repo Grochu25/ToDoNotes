@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">ToDoNotes</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="sort_by_date_asc">Data rosnąco</string>
+    <string name="sort_by_date_desc">Data malejąco</string>
+    <string name="sort_by_name_asc">Nazwa rosnąco</string>
+    <string name="sort_by_name_desc">Nazwa malejąco</string>
 </resources>

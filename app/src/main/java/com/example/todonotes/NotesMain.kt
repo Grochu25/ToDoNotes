@@ -5,10 +5,12 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.LinearLayout
+import android.widget.PopupMenu
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -21,7 +23,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 @RequiresApi(Build.VERSION_CODES.O)
 class NotesMain : Fragment() {
     private lateinit var viewModel: NotesMainViewModel
-    private lateinit var highadapter: PriorityAdapter
+    private lateinit var highPriorityAdapter: PriorityAdapter
+    private lateinit var mediumPriorityAdapter: PriorityAdapter
+    private lateinit var lowPriorityAdapter: PriorityAdapter
+
+    private var isSortedByDate = true // default we sort by date
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,6 +39,7 @@ class NotesMain : Fragment() {
         val addNotesButton = view.findViewById<FloatingActionButton>(R.id.addNewNotes)
         val searchNotesButton = view.findViewById<ImageButton>(R.id.searchButton)
         val allCategoriesButton = view.findViewById<ImageButton>(R.id.allCategories)
+        val sortedByButton = view.findViewById<ImageButton>(R.id.sortedBy)
 
         val highPriorityList = view.findViewById<RecyclerView>(R.id.highPriorityList)
         val mediumPriorityList = view.findViewById<RecyclerView>(R.id.mediumPriorityList)
@@ -89,6 +96,8 @@ class NotesMain : Fragment() {
                 .commit()
         }
 
+        sortedByButton.setOnClickListener{showSortMenu(it)}
+
         return view
     }
 
@@ -134,4 +143,35 @@ class NotesMain : Fragment() {
             .addToBackStack(null)
             .commit()
     }
+
+    private fun showSortMenu(view: View) {
+        val popupMenu = PopupMenu(requireContext(), view)
+        popupMenu.menuInflater.inflate(R.menu.sort_menu, popupMenu.menu)
+
+        popupMenu.setOnMenuItemClickListener { item: MenuItem ->
+            when (item.itemId) {
+                R.id.sort_by_date_asc -> {
+                    isSortedByDate = true
+                    // there will be connect with mvvm
+                    true
+                }
+                R.id.sort_by_date_desc -> {
+                    isSortedByDate = false
+                    // there will be connect with mvvm
+                    true
+                }
+                R.id.sort_by_name_asc -> {
+                    // there will be connect with mvvm
+                    true
+                }
+                R.id.sort_by_name_desc -> {
+                    // there will be connect with mvvm
+                    true
+                }
+                else -> false
+            }
+        }
+        popupMenu.show()
+    }
+
 }
