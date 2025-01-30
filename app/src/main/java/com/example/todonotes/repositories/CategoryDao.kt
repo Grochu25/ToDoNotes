@@ -19,6 +19,10 @@ interface CategoryDao {
     @Query("SELECT * FROM category WHERE name == :name")
     fun getCategoryByName(name: String): Category
 
+    @Transaction
+    @Query("DELETE FROM category WHERE categoryId == :categoryId")
+    fun deleteCategory(categoryId: Int)
+
     @Insert
     fun insertAll(vararg kategorie: Category)
 }
