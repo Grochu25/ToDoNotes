@@ -51,6 +51,18 @@ class NotesMain : Fragment() {
         lowPriorityList.layoutManager = LinearLayoutManager(context)
         lowPriorityList.adapter = PriorityAdapter(notesMainViewModel.lowPriorityItems.value!!, List(notesMainViewModel.lowPriorityItems.value!!.size) { 3 }, noteDetails)
 
+        val categoryRecyclerView = view.findViewById<RecyclerView>(R.id.categoryRecyclerView)
+
+        val categoriesFromDB = Dependencies.categoryDao.getAll()
+
+        val mainCategoryAdapter = MainCategoryAdapter(
+            items = categoriesFromDB,
+            onCategoryClick = { chosenCategory ->
+            }
+        )
+        categoryRecyclerView.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
+        categoryRecyclerView.adapter = mainCategoryAdapter
+
         sectionsVisibility()
 
         addNotesButton.setOnClickListener {

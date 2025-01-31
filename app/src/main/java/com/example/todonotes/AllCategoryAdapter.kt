@@ -3,6 +3,7 @@ package com.example.todonotes
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +22,7 @@ class AllCategoryAdapter(
         val taskCounter: TextView = view.findViewById(R.id.textTaskCount)
         val deleteButton: ImageButton = view.findViewById(R.id.deleteButton)
         val editButton: ImageButton = view.findViewById(R.id.editButton)
+        val categoryButton = view.findViewById<Button>(R.id.categoryButton)
         val container: View = view
     }
 

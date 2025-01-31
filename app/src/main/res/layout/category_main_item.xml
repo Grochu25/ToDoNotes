@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.widget.Button xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/categoryButton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="8dp"
+    android:text="Kategorie"
+    android:background="@drawable/rounded_main_button"
+    android:elevation="6dp"
+    android:padding="12dp"
+    android:textSize="16sp"
+    android:textColor="@android:color/white" />
