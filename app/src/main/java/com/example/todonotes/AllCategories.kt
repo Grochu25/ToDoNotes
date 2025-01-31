@@ -33,7 +33,7 @@ class AllCategories : Fragment() {
         adapter = AllCategoryAdapter(
             allCategoryViewModel.categories.value!!,
             allCategoryViewModel.categoryItemsCount.value!!,
-            allCategoryViewModel.delete
+            allCategoryViewModel.delete,
         )
 
         val addCategory = view.findViewById<Button>(R.id.buttonAddCategory)

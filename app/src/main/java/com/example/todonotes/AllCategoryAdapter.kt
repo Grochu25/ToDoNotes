@@ -13,7 +13,8 @@ class AllCategoryAdapter(
     private val items: MutableList<Category>,
     private val taskCounts: Map<String, Int>,
     //private val onClickListener: (Category) -> Unit,
-    private val onDeleteClick: (Category) -> Unit
+    private val onDeleteClick: (Category) -> Unit,
+//    private val onEditClick: (Category) -> Unit
 ) : RecyclerView.Adapter<AllCategoryAdapter.ViewHolder>() {
 
 
@@ -21,7 +22,7 @@ class AllCategoryAdapter(
         val category: TextView = view.findViewById(R.id.textCategoryName)
         val taskCounter: TextView = view.findViewById(R.id.textTaskCount)
         val deleteButton: ImageButton = view.findViewById(R.id.deleteButton)
-        val editButton: ImageButton = view.findViewById(R.id.editButton)
+//        val editButton: ImageButton = view.findViewById(R.id.editButton)
         val categoryButton = view.findViewById<Button>(R.id.categoryButton)
         val container: View = view
     }
@@ -39,7 +40,7 @@ class AllCategoryAdapter(
         holder.taskCounter.text = taskCounts[category.name]?.toString() ?: "0"
 
         holder.itemView.setOnClickListener{
-            //onClickListener(items[position])
+//            onClickListener(items[position])
         }
 
         // temporarily skip the border color
@@ -49,8 +50,8 @@ class AllCategoryAdapter(
             notifyDataSetChanged()
         }
 
-//        holder.editButton.setOnClickListener{
-//                 ->    AddCategory
+//        holder.editButton.setOnClickListener {
+//            onEditClick(category)
 //        }
 
     }
