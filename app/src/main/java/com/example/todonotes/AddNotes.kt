@@ -88,7 +88,7 @@ class AddNotes : Fragment() {
             }
 
             builder.setPositiveButton("Tak"){ _, _ ->
-                Toast.makeText(requireContext(), "Dodano poprawnie nową notatkę!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Kategoria została anulowana!", Toast.LENGTH_SHORT).show()
                 requireActivity().supportFragmentManager.popBackStack()
             }
 

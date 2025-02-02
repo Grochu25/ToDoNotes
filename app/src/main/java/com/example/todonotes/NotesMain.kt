@@ -65,7 +65,7 @@ class NotesMain : Fragment() {
                 }
             }
         )
-        
+
         categoryRecyclerView.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
         categoryRecyclerView.adapter = mainCategoryAdapter
 
