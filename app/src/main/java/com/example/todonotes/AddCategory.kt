@@ -55,17 +55,17 @@ class AddCategory : Fragment() {
 
 
         colorRedButton.setOnClickListener {
-            addCategoryViewModel.categoryColor.value = 0xFFFF0000.toInt()
+            addCategoryViewModel.categoryColor.value = 0xFF975454.toInt()
             selectButton(colorRedButton, colorGreenButton, colorBlueButton)
         }
 
         colorGreenButton.setOnClickListener {
-            addCategoryViewModel.categoryColor.value = 0xFF00FF00.toInt()
+            addCategoryViewModel.categoryColor.value = 0xFF478347.toInt()
             selectButton(colorGreenButton, colorRedButton, colorBlueButton)
         }
 
         colorBlueButton.setOnClickListener {
-            addCategoryViewModel.categoryColor.value = 0xFF0000FF.toInt()
+            addCategoryViewModel.categoryColor.value = 0xFF353599.toInt()
             selectButton(colorBlueButton, colorRedButton, colorGreenButton)
         }
 
