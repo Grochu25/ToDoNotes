@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ripple xmlns:android="http://schemas.android.com/apk/res/android"
-    android:color="?attr/colorControlHighlight">
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape android:shape="rectangle">
-            <corners android:radius="50dp"/>
-            <solid android:color="?attr/colorPrimary"/>
-            <padding android:left="16dp" android:right="16dp"/>
+             Wypełnienie białe
+            <solid android:color="@android:color/white" />
+             Obramowanie
+            <stroke android:width="2dp" android:color="?attr/colorPrimary"
+            />
+             Zaokrąglone rogi
+            <corners android:radius="16dp" />
         </shape>
     </item>
-</ripple>
+</selector>

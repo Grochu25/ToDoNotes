@@ -22,7 +22,7 @@ class AllCategoryAdapter(
         val category: TextView = view.findViewById(R.id.textCategoryName)
         val taskCounter: TextView = view.findViewById(R.id.textTaskCount)
         val deleteButton: ImageButton = view.findViewById(R.id.deleteButton)
-//        val editButton: ImageButton = view.findViewById(R.id.editButton)
+        val editButton: ImageButton = view.findViewById(R.id.editButton)
         val categoryButton = view.findViewById<Button>(R.id.categoryButton)
         val container: View = view
     }
@@ -39,21 +39,18 @@ class AllCategoryAdapter(
         holder.category.text = category.name
         holder.taskCounter.text = taskCounts[category.name]?.toString() ?: "0"
 
-        holder.itemView.setOnClickListener{
-//            onClickListener(items[position])
+        if (category.categoryId == -1) {
+            holder.deleteButton.visibility = View.GONE
+            holder.editButton.visibility = View.GONE
+        } else {
+            holder.deleteButton.visibility = View.VISIBLE
+            holder.editButton.visibility = View.VISIBLE
+
+            holder.deleteButton.setOnClickListener {
+                onDeleteClick(items[position])
+                notifyDataSetChanged()
+            }
         }
-
-        // temporarily skip the border color
-
-        holder.deleteButton.setOnClickListener{
-            onDeleteClick(items[position])
-            notifyDataSetChanged()
-        }
-
-//        holder.editButton.setOnClickListener {
-//            onEditClick(category)
-//        }
-
     }
 
     override fun getItemCount(): Int = items.size

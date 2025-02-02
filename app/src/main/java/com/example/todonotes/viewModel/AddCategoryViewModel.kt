@@ -9,13 +9,16 @@ import com.example.todonotes.repositories.Category
 
 class AddCategoryViewModel : ViewModel()
 {
-    var id:Int
+    var id: Int
     var categoryName = MutableLiveData<String>()
+    var categoryColor = MutableLiveData<Int>()
+
 
     init {
         var categoryList: List<Category> = Dependencies.categoryDao.getAll()
         id = if(categoryList.isEmpty()) 0 else (categoryList.sortedBy { it.categoryId }.last().categoryId+1)
         categoryName.value = ""
+        categoryColor.value = 0xFF800080.toInt()
     }
 
     fun canAdd(): Boolean
@@ -28,7 +31,7 @@ class AddCategoryViewModel : ViewModel()
         if(Dependencies.categoryDao.getCategoryById(id) == null
             && Dependencies.categoryDao.getCategoryByName(categoryName.value!!) == null){
             Dependencies.categoryDao.insertAll(
-                Category(id, categoryName.value!!,0)
+                Category(id, categoryName.value!!, categoryColor.value)
             )
         }
     }

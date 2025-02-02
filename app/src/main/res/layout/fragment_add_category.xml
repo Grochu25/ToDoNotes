@@ -25,15 +25,74 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:gravity="center"
-                android:hint="wpisz nazwę"
+                android:hint="Wpisz nazwę"
                 android:text="@={addCategoryViewModel.categoryName}"
                 android:padding="12dp"
-                app:layout_constraintBottom_toTopOf="@id/buttonLayout"
+                app:layout_constraintBottom_toTopOf="@+id/colorOptionsLayout"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.488" />
+                app:layout_constraintVertical_bias="0.4" />
+
+            <LinearLayout
+                android:id="@+id/colorOptionsLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                app:layout_constraintTop_toBottomOf="@id/inputName"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginBottom="16dp">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/colorRedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:background="@drawable/rounded_button_red"
+                    android:text="Czerwony"
+                    android:textColor="@android:color/white"
+                    android:layout_margin="4dp" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/colorGreenButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:background="@drawable/rounded_button_green"
+                    android:text="Zielony"
+                    android:textColor="@android:color/white"
+                    android:layout_margin="4dp" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/colorBlueButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:background="@drawable/rounded_button_blue"
+                    android:text="Niebieski"
+                    android:textColor="@android:color/white"
+                    android:layout_margin="4dp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/selectedColorLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Wybrany kolor:"
+                app:layout_constraintTop_toBottomOf="@id/colorOptionsLayout"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="8dp"/>
+
+            <View
+                android:id="@+id/selectedColorIndicator"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="4dp"
+                app:layout_constraintTop_toBottomOf="@id/selectedColorLabel"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:background="#800080" />
 
             <LinearLayout
                 android:id="@+id/buttonLayout"

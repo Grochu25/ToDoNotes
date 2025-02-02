@@ -1,9 +1,12 @@
 package com.example.todonotes
 
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todonotes.repositories.Category
 
@@ -25,7 +28,21 @@ class MainCategoryAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val category = items[position]
         holder.categoryButton.text = category.name
+        val drawable = ContextCompat.getDrawable(holder.itemView.context, R.drawable.rounded_button)
 
+        if (category.categoryId == -1) {
+            if (drawable is GradientDrawable) {
+                drawable.setColor(Color.parseColor("#D3D3D3"))
+                holder.categoryButton.background = drawable
+            }
+            holder.categoryButton.setTextColor(Color.BLACK)
+        } else {
+            if (drawable is GradientDrawable) {
+                drawable.setColor(category.color ?: Color.GRAY)
+                holder.categoryButton.background = drawable
+            }
+            holder.categoryButton.setTextColor(Color.WHITE)
+        }
         holder.categoryButton.setOnClickListener {
             onCategoryClick(category)
         }
