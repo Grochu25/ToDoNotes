@@ -2,12 +2,9 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape android:shape="rectangle">
-             Wypełnienie białe
             <solid android:color="@android:color/white" />
-             Obramowanie
             <stroke android:width="2dp" android:color="?attr/colorPrimary"
             />
-             Zaokrąglone rogi
             <corners android:radius="16dp" />
         </shape>
     </item>

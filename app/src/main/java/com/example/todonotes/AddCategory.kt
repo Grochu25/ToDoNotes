@@ -93,7 +93,7 @@ class AddCategory : Fragment() {
             }
 
             builder.setPositiveButton("Tak"){ _, _ ->
-                Toast.makeText(requireContext(), "Dodano poprawnie kategorię!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Anulowanie dodawanie kategorii!", Toast.LENGTH_SHORT).show()
                 requireActivity().supportFragmentManager.popBackStack()
             }
 
