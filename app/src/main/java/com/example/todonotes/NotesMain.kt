@@ -25,6 +25,7 @@ class NotesMain : Fragment() {
     private lateinit var notesMainViewModel: NotesMainViewModel
 
     private var isSortedByDate = true // default we sort by date
+    private var areAllCategoriesSelected = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,8 +59,13 @@ class NotesMain : Fragment() {
         val mainCategoryAdapter = MainCategoryAdapter(
             items = categoriesFromDB,
             onCategoryClick = { chosenCategory ->
+                if (chosenCategory.categoryId == -1) {
+                    notesMainViewModel.toggleAllNotesVisibility()
+                    resetAdapters()
+                }
             }
         )
+        
         categoryRecyclerView.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
         categoryRecyclerView.adapter = mainCategoryAdapter
 

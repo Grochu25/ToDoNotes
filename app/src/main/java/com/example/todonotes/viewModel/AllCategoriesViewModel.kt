@@ -15,13 +15,29 @@ class AllCategoriesViewModel : ViewModel()
         Dependencies.categoryDao.deleteNotesFromCategory(it.categoryId)
         Dependencies.categoryDao.deleteCategory(it.categoryId)
         reloadDataFromDB()
+        updateCategoryCounts()
     }
 
     init {
+        if (Dependencies.categoryDao.getCategoryById(-1) == null) {
+            val totalNotes = Dependencies.noteDao.getAll().size
+            Dependencies.categoryDao.insertAll(Category(-1, "wszystkie", totalNotes))
+        }
         categories.value = mutableListOf()
         categoryItemsCount.value = Dependencies.noteDao.getAllByCategories().map{ it.category.name!! to it.notes.size}.toMap()
+        updateCategoryCounts()
         reloadDataFromDB()
     }
+
+    fun updateCategoryCounts() {
+        val counts = Dependencies.noteDao.getAllByCategories()
+            .map { it.category.name!! to it.notes.size }
+            .toMap()
+            .toMutableMap()
+        counts["wszystkie"] = Dependencies.noteDao.getAll().size
+        categoryItemsCount.value = counts
+    }
+
 
     fun reloadDataFromDB()
     {

@@ -20,6 +20,7 @@ class NotesMainViewModel : ViewModel()
     val lowPriorityItems = _lowPriorityItems
 
     var sortType: SortType = SortType.DATE_ASC
+    private var allNotesVisible: Boolean = true
 
     init {
         reloadDataFromDB()
@@ -28,6 +29,11 @@ class NotesMainViewModel : ViewModel()
     fun reloadDataFromDB()
     {
         reloadDataFromDB(sortType)
+    }
+
+    fun toggleAllNotesVisibility() {
+        allNotesVisible = !allNotesVisible
+        reloadDataFromDB()
     }
 
     fun reloadDataFromDB(sortType: SortType)
