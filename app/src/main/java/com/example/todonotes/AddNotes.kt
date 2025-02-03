@@ -74,10 +74,6 @@ class AddNotes : Fragment() {
         val selectTimeButton = requireActivity().findViewById<Button>(R.id.selectTimeButton)
         val selectedDateTimeText = requireActivity().findViewById<TextView>(R.id.selectedDateTimeText)
 
-        val cal = Calendar.getInstance()
-        cal.set(2025,1,30,15, 0)
-        (requireActivity() as MainActivity).addNotification("MIGRACJA",cal)
-
         cancelButton.setOnClickListener {
             val builder = AlertDialog.Builder(requireContext())
             builder.setTitle("Potwierdzenie")
@@ -106,12 +102,8 @@ class AddNotes : Fragment() {
             }
             else {
                 addNotesViewModel.saveNoteToDatabase()
-
-                Toast.makeText(
-                    requireContext(),
-                    "Dodano poprawnie nową notatkę!",
-                    Toast.LENGTH_SHORT
-                ).show()
+                addNotification()
+                Toast.makeText(requireContext(), "Dodano poprawnie nową notatkę!", Toast.LENGTH_SHORT).show()
                 requireActivity().supportFragmentManager.popBackStack()
             }
         }
@@ -181,4 +173,8 @@ class AddNotes : Fragment() {
         selectedDateTimeText.text = "Wybrana data i godzina: $date $time"
     }
 
+    private fun addNotification()
+    {
+        (requireActivity() as MainActivity).addNotification(addNotesViewModel.title.value!!,addNotesViewModel.getInstant())
+    }
 }

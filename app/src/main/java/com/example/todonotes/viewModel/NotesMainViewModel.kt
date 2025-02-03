@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.todonotes.Dependencies
+import com.example.todonotes.repositories.Category
 import com.example.todonotes.repositories.Note
 import com.example.todonotes.repositories.Priority
 
@@ -19,10 +20,14 @@ class NotesMainViewModel : ViewModel()
     val mediumPriorityItems = _mediumPriorityItems
     val lowPriorityItems = _lowPriorityItems
 
+    var categories: MutableList<Category>
+    var choosenCategory: Int = -1
+
     var sortType: SortType = SortType.DATE_ASC
     private var allNotesVisible: Boolean = true
 
     init {
+        categories = mutableListOf()
         reloadDataFromDB()
     }
 
@@ -38,36 +43,40 @@ class NotesMainViewModel : ViewModel()
 
     fun reloadDataFromDB(sortType: SortType)
     {
+        categories.clear()
+        Dependencies.categoryDao.getAll().mapTo(categories){it}
+
         when(sortType)
         {
             SortType.DATE_DESC -> {
-                _highPriorityItems.value = Dependencies.noteDao.getAllWithOrderedByFavDateDESC(Priority.WYSOKA)
-                _mediumPriorityItems.value = Dependencies.noteDao.getAllWithOrderedByFavDateDESC(Priority.SREDNIA)
-                _lowPriorityItems.value = Dependencies.noteDao.getAllWithOrderedByFavDateDESC(Priority.NISKA)
+                _highPriorityItems.value = Dependencies.noteDao.getAllWithPrioOrderedByFavDateDESC(Priority.WYSOKA).filter{(choosenCategory >= 0 && it.categoryId == choosenCategory) || choosenCategory<0}.toList()
+                _mediumPriorityItems.value = Dependencies.noteDao.getAllWithPrioOrderedByFavDateDESC(Priority.SREDNIA).filter{(choosenCategory >= 0 && it.categoryId == choosenCategory) || choosenCategory<0}.toList()
+                _lowPriorityItems.value = Dependencies.noteDao.getAllWithPrioOrderedByFavDateDESC(Priority.NISKA).filter{(choosenCategory >= 0 && it.categoryId == choosenCategory) || choosenCategory<0}.toList()
             }
             SortType.DATE_ASC -> {
-                _highPriorityItems.value = Dependencies.noteDao.getAllWithOrderedByFavDateASC(Priority.WYSOKA)
-                _mediumPriorityItems.value = Dependencies.noteDao.getAllWithOrderedByFavDateASC(Priority.SREDNIA)
-                _lowPriorityItems.value = Dependencies.noteDao.getAllWithOrderedByFavDateASC(Priority.NISKA)
+                _highPriorityItems.value = Dependencies.noteDao.getAllWithPrioOrderedByFavDateASC(Priority.WYSOKA).filter{(choosenCategory >= 0 && it.categoryId == choosenCategory) || choosenCategory<0}.toList()
+                _mediumPriorityItems.value = Dependencies.noteDao.getAllWithPrioOrderedByFavDateASC(Priority.SREDNIA).filter{(choosenCategory >= 0 && it.categoryId == choosenCategory) || choosenCategory<0}.toList()
+                _lowPriorityItems.value = Dependencies.noteDao.getAllWithPrioOrderedByFavDateASC(Priority.NISKA).filter{(choosenCategory >= 0 && it.categoryId == choosenCategory) || choosenCategory<0}.toList()
             }
             SortType.NAME_ASC -> {
-                _highPriorityItems.value = Dependencies.noteDao.getAllWithOrderedByFavTitleASC(Priority.WYSOKA)
-                _mediumPriorityItems.value = Dependencies.noteDao.getAllWithOrderedByFavTitleASC(Priority.SREDNIA)
-                _lowPriorityItems.value = Dependencies.noteDao.getAllWithOrderedByFavTitleASC(Priority.NISKA)
+                _highPriorityItems.value = Dependencies.noteDao.getAllWithPrioOrderedByFavTitleASC(Priority.WYSOKA).filter{(choosenCategory >= 0 && it.categoryId == choosenCategory) || choosenCategory<0}.toList()
+                _mediumPriorityItems.value = Dependencies.noteDao.getAllWithPrioOrderedByFavTitleASC(Priority.SREDNIA).filter{(choosenCategory >= 0 && it.categoryId == choosenCategory) || choosenCategory<0}.toList()
+                _lowPriorityItems.value = Dependencies.noteDao.getAllWithPrioOrderedByFavTitleASC(Priority.NISKA).filter{(choosenCategory >= 0 && it.categoryId == choosenCategory) || choosenCategory<0}.toList()
             }
             SortType.NAME_DESC -> {
-                _highPriorityItems.value = Dependencies.noteDao.getAllWithOrderedByFavTitleDESC(Priority.WYSOKA)
-                _mediumPriorityItems.value = Dependencies.noteDao.getAllWithOrderedByFavTitleDESC(Priority.SREDNIA)
-                _lowPriorityItems.value = Dependencies.noteDao.getAllWithOrderedByFavTitleDESC(Priority.NISKA)
+                _highPriorityItems.value = Dependencies.noteDao.getAllWithPrioOrderedByFavTitleDESC(Priority.WYSOKA).filter{(choosenCategory >= 0 && it.categoryId == choosenCategory) || choosenCategory<0}.toList()
+                _mediumPriorityItems.value = Dependencies.noteDao.getAllWithPrioOrderedByFavTitleDESC(Priority.SREDNIA).filter{(choosenCategory >= 0 && it.categoryId == choosenCategory) || choosenCategory<0}.toList()
+                _lowPriorityItems.value = Dependencies.noteDao.getAllWithPrioOrderedByFavTitleDESC(Priority.NISKA).filter{(choosenCategory >= 0 && it.categoryId == choosenCategory) || choosenCategory<0}.toList()
             }
             else -> {
-                _highPriorityItems.value = Dependencies.noteDao.getAllByPriority(Priority.WYSOKA)
-                _mediumPriorityItems.value = Dependencies.noteDao.getAllByPriority(Priority.SREDNIA)
-                _lowPriorityItems.value = Dependencies.noteDao.getAllByPriority(Priority.NISKA)
+                _highPriorityItems.value = Dependencies.noteDao.getAllByPriority(Priority.WYSOKA).filter{(choosenCategory >= 0 && it.categoryId == choosenCategory) || choosenCategory<0}.toList()
+                _mediumPriorityItems.value = Dependencies.noteDao.getAllByPriority(Priority.SREDNIA).filter{(choosenCategory >= 0 && it.categoryId == choosenCategory) || choosenCategory<0}.toList()
+                _lowPriorityItems.value = Dependencies.noteDao.getAllByPriority(Priority.NISKA).filter{(choosenCategory >= 0 && it.categoryId == choosenCategory) || choosenCategory<0}.toList()
             }
         }
 
     }
+
 
     class Factory() : ViewModelProvider.Factory
     {

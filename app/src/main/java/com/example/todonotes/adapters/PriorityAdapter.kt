@@ -1,25 +1,21 @@
-package com.example.todonotes
+package com.example.todonotes.adapters
 
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
+import com.example.todonotes.R
 import com.example.todonotes.repositories.Note
 import java.time.format.DateTimeFormatter
 
-class SearchNotesAdapter(
-    private val items: MutableList<Note>,
-    private val onClickListener: (Note) -> Unit
-) : RecyclerView.Adapter<SearchNotesAdapter.ViewHolder>() {
+class PriorityAdapter(private val items: List<Note>, private val priorities: List<Int>, private var onClickListener: (Note) -> Unit) :
+    RecyclerView.Adapter<PriorityAdapter.ViewHolder>() {
 
-    private var filteredList: List<Note> = items
-
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view){
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val remindText: TextView = view.findViewById(R.id.titleText)
         val remindDateText: TextView = view.findViewById(R.id.remindDateText)
         val starButton: ImageButton = view.findViewById(R.id.starButton)
@@ -32,16 +28,15 @@ class SearchNotesAdapter(
         return ViewHolder(view)
     }
 
-
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val note = filteredList[position]
-
-        holder.remindText.text = note.title
-        holder.remindDateText.text = "Przypomnienie: " + note.date?.format(DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy"))
+        val title = items[position].title
+        val remindDate = "Przypomnienie: "+items[position].date?.format(DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy"))
+        holder.remindText.text = title
+        holder.remindDateText.text = remindDate
 
         holder.itemView.setOnClickListener{
-            onClickListener(note)
+            onClickListener(items[position])
         }
 
         holder.starButton.setOnClickListener {
@@ -54,8 +49,13 @@ class SearchNotesAdapter(
                 holder.starButton.tag = false
             }
         }
+
+        when (priorities[position]) {
+            1 -> holder.container.setBackgroundResource(R.drawable.border_high_item)
+            2 -> holder.container.setBackgroundResource(R.drawable.border_medium_item)
+            3 -> holder.container.setBackgroundResource(R.drawable.border_low_item)
+        }
     }
 
-    override fun getItemCount(): Int = filteredList.size
+    override fun getItemCount() = items.size
 }
-

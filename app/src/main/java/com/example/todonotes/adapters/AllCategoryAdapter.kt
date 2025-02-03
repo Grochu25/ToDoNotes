@@ -1,4 +1,4 @@
-package com.example.todonotes
+package com.example.todonotes.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.todonotes.R
 import com.example.todonotes.repositories.Category
 
 class AllCategoryAdapter(
@@ -14,7 +15,7 @@ class AllCategoryAdapter(
     private val taskCounts: Map<String, Int>,
     //private val onClickListener: (Category) -> Unit,
     private val onDeleteClick: (Category) -> Unit,
-//    private val onEditClick: (Category) -> Unit
+    private val onEditClick: (Category) -> Unit
 ) : RecyclerView.Adapter<AllCategoryAdapter.ViewHolder>() {
 
 
@@ -39,6 +40,8 @@ class AllCategoryAdapter(
         holder.category.text = category.name
         holder.taskCounter.text = taskCounts[category.name]?.toString() ?: "0"
 
+
+
         if (category.categoryId == -1) {
             holder.deleteButton.visibility = View.GONE
             holder.editButton.visibility = View.GONE
@@ -46,6 +49,10 @@ class AllCategoryAdapter(
             holder.deleteButton.visibility = View.VISIBLE
             holder.editButton.visibility = View.VISIBLE
 
+            holder.itemView.setOnClickListener {
+                onEditClick(items[position])
+                notifyDataSetChanged()
+            }
             holder.deleteButton.setOnClickListener {
                 onDeleteClick(items[position])
                 notifyDataSetChanged()

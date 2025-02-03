@@ -7,13 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageButton
-import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.LayoutManager
+import com.example.todonotes.adapters.AllCategoryAdapter
+import com.example.todonotes.repositories.Category
 import com.example.todonotes.viewModel.AllCategoriesViewModel
 
 class AllCategories : Fragment() {
@@ -26,14 +25,12 @@ class AllCategories : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_all_categories, container, false)
         allCategoryViewModel = ViewModelProvider(this, AllCategoriesViewModel.Factory())[AllCategoriesViewModel::class.java]
-        adapter = AllCategoryAdapter(allCategoryViewModel.categories.value!!,
-            allCategoryViewModel.categoryItemsCount.value!!,
-            allCategoryViewModel.delete)
 
         adapter = AllCategoryAdapter(
             allCategoryViewModel.categories.value!!,
             allCategoryViewModel.categoryItemsCount.value!!,
             allCategoryViewModel.delete,
+            editCategory
         )
 
         val addCategory = view.findViewById<Button>(R.id.buttonAddCategory)
@@ -51,6 +48,14 @@ class AllCategories : Fragment() {
 
         return view
     }
+
+    var editCategory: (Category)->Unit =
+        {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, EditCategory.newInstance(it.categoryId))
+                .addToBackStack(null)
+                .commit()
+        }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

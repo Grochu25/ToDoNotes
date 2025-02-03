@@ -62,9 +62,6 @@ class MainActivity : AppCompatActivity() {
             Dependencies.categoryDao.insertAll(Category(0, "Szkoła", Color.RED))
         val kategorie: List<Category> = Dependencies.categoryDao.getAll()
 
-//        val cal = Calendar.getInstance()
-//        Log.v("mango",cal.toString())
-//        addNotification("KOTLET",cal)
     }
     override fun onSupportNavigateUp(): Boolean {
         supportFragmentManager.popBackStack()
@@ -84,14 +81,7 @@ class MainActivity : AppCompatActivity() {
             ActivityResultContracts.RequestPermission()
         ) { isGranted: Boolean ->
             if (isGranted) {
-                // Permission is granted. Continue the action or workflow in your
-                // app.
             } else {
-                // Explain to the user that the feature is unavailable because the
-                // feature requires a permission that the user has denied. At the
-                // same time, respect the user's decision. Don't link to system
-                // settings in an effort to convince the user to change their
-                // decision.
             }
         }
 
@@ -110,7 +100,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun addNotification(title: String, time: Calendar)
+    fun addNotification(title: String, time: Instant)
     {
 
         when {
@@ -120,33 +110,27 @@ class MainActivity : AppCompatActivity() {
             )+ContextCompat.checkSelfPermission(
                 applicationContext,
                 Manifest.permission.POST_NOTIFICATIONS)) == PackageManager.PERMISSION_GRANTED -> {
-                Log.v("mango", "BIGGER")
-                var intent = Intent(applicationContext, Notification::class.java).apply {
-                    action = "com.example.todonotes.ALARM_ACTION"
-                }
 
-                Intent("com.example.todonotes.ALARM_ACTION")
+                val intent = Intent("com.example.todonotes.ALARM_ACTION").apply {
+                    setPackage("com.example.todonotes")
+                }
 
                 intent.putExtra(NOTIFICATION_ID, Instant.now().toEpochMilli().toInt())
                 intent.putExtra(NOTIFICATION_TITLE, "Przypomnienie")
                 intent.putExtra(NOTIFICATION_MESSAGE, title)
                 var pendingIntent = PendingIntent.getBroadcast(this, 0, intent,
                     PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+
                 var alarmManager = applicationContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-                Log.d("AlarmManager", "Ustawiam alarm na: "+(System.currentTimeMillis()+10000).toString())
                 alarmManager.setExactAndAllowWhileIdle(
                     AlarmManager.RTC_WAKEUP,
-                    System.currentTimeMillis()+10000,
+                    time.toEpochMilli(),
                     pendingIntent)
 
                 val alarmUp = (PendingIntent.getBroadcast(
                     applicationContext, 0,
                     Intent("com.example.todonotes.ALARM_ACTION"),
                     PendingIntent.FLAG_NO_CREATE or PendingIntent.FLAG_IMMUTABLE) != null)
-
-                if (alarmUp) {
-                    Log.d("mango", "Alarm is already active")
-                }
 
             }
             ActivityCompat.shouldShowRequestPermissionRationale(

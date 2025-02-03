@@ -1,6 +1,5 @@
-package com.example.todonotes
+package com.example.todonotes.adapters
 
-import android.R.attr.title
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +8,7 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
+import com.example.todonotes.R
 import com.example.todonotes.repositories.Note
 import java.time.format.DateTimeFormatter
 

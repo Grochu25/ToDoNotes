@@ -32,35 +32,23 @@ interface NoteDao {
 
     @Transaction
     @Query("SELECT * FROM note WHERE note.priority == :priority ORDER BY isFavorite, date ASC")
-    fun getAllWithOrderedByFavDateASC(priority: Priority): List<Note>
+    fun getAllWithPrioOrderedByFavDateASC(priority: Priority): List<Note>
 
     @Transaction
     @Query("SELECT * FROM note WHERE note.priority == :priority ORDER BY isFavorite, date DESC")
-    fun getAllWithOrderedByFavDateDESC(priority: Priority): List<Note>
+    fun getAllWithPrioOrderedByFavDateDESC(priority: Priority): List<Note>
 
     @Transaction
     @Query("SELECT * FROM note WHERE note.priority == :priority ORDER BY isFavorite, title ASC")
-    fun getAllWithOrderedByFavTitleASC(priority: Priority): List<Note>
+    fun getAllWithPrioOrderedByFavTitleASC(priority: Priority): List<Note>
 
     @Transaction
     @Query("SELECT * FROM note WHERE note.priority == :priority ORDER BY isFavorite, title DESC")
-    fun getAllWithOrderedByFavTitleDESC(priority: Priority): List<Note>
+    fun getAllWithPrioOrderedByFavTitleDESC(priority: Priority): List<Note>
 
-    @Transaction
-    @Query("SELECT category.name, COUNT(*) AS count FROM note, category WHERE note.categoryId == category.categoryId GROUP BY category.name")
-    fun getNoteNumberByCategory(): List<NoteNumber>
-
-    @Transaction
     @Query("SELECT * FROM note WHERE noteId = :notId")
     fun getNoteById(notId: Int): Note
 
-    @Transaction
-    @Query("SELECT * FROM note, category WHERE note.categoryId == category.categoryId AND note.categoryId = :catId")
-    fun getNotesByCategoryId(catId: Int): List<NoteCategory>
-
-    @Transaction
-    @Query("SELECT * FROM note, category WHERE note.categoryId == category.categoryId AND (note.title LIKE ''%:search%'' OR note.desc LIKE ''%:search%'')")
-    fun getAllSearched(search: String) : List<NoteCategory>
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
     fun insertAll(vararg notatki: Note)

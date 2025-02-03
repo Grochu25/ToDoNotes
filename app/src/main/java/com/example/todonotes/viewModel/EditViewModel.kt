@@ -35,7 +35,7 @@ class EditViewModel(noteId: Int) : ViewModel()
         Dependencies.categoryDao.getAll().mapTo(categories){ it.name!! }
         Priority.values().mapTo(priorities){it.name}
 
-        category.value = categories.indexOf(Dependencies.categoryDao.getCategoryById(note.categoryId).name)
+        category.value = categories.indexOf(Dependencies.categoryDao.getCategoryById(note.categoryId)!!.name)
         priority.value = note.priority.ordinal
     }
 
@@ -46,7 +46,7 @@ class EditViewModel(noteId: Int) : ViewModel()
                 Note(id, title.value, description.value,
                     LocalDateTime.parse((date!!.value+" : "+time!!.value+" +0100"), DateTimeFormatter.ofPattern("MMM dd, yyyy : HH:mm Z")),
                     Priority.values()[priority.value!!],
-                    Dependencies.categoryDao.getCategoryByName(categories[category.value!!]).categoryId,
+                    Dependencies.categoryDao.getCategoryByName(categories[category.value!!])!!.categoryId,
                     note.isFavorite
                 )
             )

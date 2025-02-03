@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
+import androidx.room.Update
 
 @Dao
 interface CategoryDao {
@@ -13,11 +14,11 @@ interface CategoryDao {
 
     @Transaction
     @Query("SELECT * FROM category WHERE categoryId == :categoryId")
-    fun getCategoryById(categoryId: Int): Category
+    fun getCategoryById(categoryId: Int): Category?
 
     @Transaction
     @Query("SELECT * FROM category WHERE name == :name")
-    fun getCategoryByName(name: String): Category
+    fun getCategoryByName(name: String): Category?
 
     @Transaction
     @Query("DELETE FROM note WHERE categoryId == :categoryId ")
@@ -29,4 +30,7 @@ interface CategoryDao {
 
     @Insert
     fun insertAll(vararg kategorie: Category)
+
+    @Update
+    fun update(vararg kategorie: Category)
 }

@@ -14,10 +14,9 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.todonotes.databinding.FragmentAddNotesBinding
+import com.example.todonotes.adapters.SearchNotesAdapter
 import com.example.todonotes.databinding.FragmentSearchBinding
 import com.example.todonotes.repositories.Note
-import com.example.todonotes.viewModel.AddNotesViewModel
 import com.example.todonotes.viewModel.SearchNotesViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)

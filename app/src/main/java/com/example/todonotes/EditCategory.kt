@@ -5,20 +5,24 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
+import com.example.todonotes.databinding.FragmentEditCategoryBinding
+import com.example.todonotes.viewModel.EditCategoryViewModel
 
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+private const val CATEGORY_ID = "cat_id"
 
 
 class EditCategory : Fragment() {
-    private var param1: String? = null
-    private var param2: String? = null
+    private var categoryId: Int = 0
+    private lateinit var editCategoryViewModel: EditCategoryViewModel
+    private lateinit var binding: FragmentEditCategoryBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            categoryId = it.getInt(CATEGORY_ID)
         }
     }
 
@@ -26,16 +30,43 @@ class EditCategory : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_edit_category, container, false)
+        editCategoryViewModel = ViewModelProvider(this, EditCategoryViewModel.Factory(categoryId))[EditCategoryViewModel::class.java]
+        binding = FragmentEditCategoryBinding.inflate(inflater, container, false)
+        binding.editCategoryViewModel = editCategoryViewModel
+        binding.lifecycleOwner = viewLifecycleOwner
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        view.findViewById<Button>(R.id.cancelButton).setOnClickListener{
+            requireActivity().supportFragmentManager.popBackStack()
+        }
+
+        view.findViewById<Button>(R.id.deleteButton).setOnClickListener{
+            editCategoryViewModel.deleteCategory()
+            requireActivity().supportFragmentManager.popBackStack()
+        }
+
+        view.findViewById<Button>(R.id.saveButton).setOnClickListener{
+            if(editCategoryViewModel.canSaveChanges()) {
+                editCategoryViewModel.updateInDatabase()
+                requireActivity().supportFragmentManager.popBackStack()
+            }
+            else{
+                Toast.makeText(requireContext(), "Nazwa już istnieje lub jest pusta!", Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
     companion object {
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance(categoryId: Int) =
             EditCategory().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+                    putInt(CATEGORY_ID, categoryId)
                 }
             }
     }

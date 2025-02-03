@@ -1,4 +1,4 @@
-package com.example.todonotes
+package com.example.todonotes.adapters
 
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.example.todonotes.R
 import com.example.todonotes.repositories.Category
 
 class MainCategoryAdapter(
@@ -43,6 +44,7 @@ class MainCategoryAdapter(
             }
             holder.categoryButton.setTextColor(Color.WHITE)
         }
+
         holder.categoryButton.setOnClickListener {
             onCategoryClick(category)
         }

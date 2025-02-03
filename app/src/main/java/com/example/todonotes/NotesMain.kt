@@ -3,6 +3,7 @@ package com.example.todonotes
 import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -15,6 +16,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.todonotes.adapters.MainCategoryAdapter
+import com.example.todonotes.adapters.PriorityAdapter
 import com.example.todonotes.repositories.Category
 import com.example.todonotes.repositories.Note
 import com.example.todonotes.viewModel.NotesMainViewModel
@@ -68,15 +71,13 @@ class NotesMain : Fragment() {
             noteDetails
         )
 
-        val categoriesFromDB = Dependencies.categoryDao.getAll()
-
         val mainCategoryAdapter = MainCategoryAdapter(
-            items = categoriesFromDB,
-            onCategoryClick = { chosenCategory ->
-                if (chosenCategory.categoryId == -1) {
-                    notesMainViewModel.toggleAllNotesVisibility()
-                    resetAdapters()
-                }
+            items = notesMainViewModel.categories,
+            onCategoryClick = {
+                Log.v("mango", it.categoryId.toString())
+                notesMainViewModel.choosenCategory = it.categoryId
+                notesMainViewModel.toggleAllNotesVisibility()
+                resetAdapters()
             }
         )
 
