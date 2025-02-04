@@ -32,9 +32,13 @@ class AddNotesViewModel : ViewModel()
 
     init{
         var noteList: List<Note> = Dependencies.noteDao.getAll()
-        id = if(noteList.isEmpty()) 0 else (noteList.sortedBy { it.noteId }.last().noteId+1)
-        Dependencies.categoryDao.getAll().mapTo(categories) { it.name!! }
+        id = if (noteList.isEmpty()) 0 else (noteList.sortedBy { it.noteId }.last().noteId +1)
+        Dependencies.categoryDao.getAll()
+            .filter { it.categoryId != -1 }
+            .sortedBy { it.name }
+            .mapTo(categories) { it.name!! }
         Priority.values().mapTo(priorities){it.name}
+
         title.value = ""
         description.value = ""
         date.value = ""
@@ -46,7 +50,6 @@ class AddNotesViewModel : ViewModel()
     @RequiresApi(Build.VERSION_CODES.O)
     fun saveNoteToDatabase()
     {
-
         if(date.value!!.get(3).equals(' ') && date.value!!.get(5).equals(',') )
             date.value = date.value!!.substring(0,4)+'0'+date.value!!.substring(4)
 
