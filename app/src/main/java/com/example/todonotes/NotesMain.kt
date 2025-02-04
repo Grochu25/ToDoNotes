@@ -74,7 +74,6 @@ class NotesMain : Fragment() {
         val mainCategoryAdapter = MainCategoryAdapter(
             items = notesMainViewModel.categories,
             onCategoryClick = {
-                Log.v("mango", it.categoryId.toString())
                 notesMainViewModel.choosenCategory = it.categoryId
                 notesMainViewModel.toggleAllNotesVisibility()
                 resetAdapters()

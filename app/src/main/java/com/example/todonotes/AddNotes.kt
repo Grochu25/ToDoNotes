@@ -92,7 +92,11 @@ class AddNotes : Fragment() {
             dialog.show()        }
 
         saveButton.setOnClickListener{
-            if(selectedDate == null || selectedTime == null)
+            if(addNotesViewModel.categories.isEmpty())
+            {
+                Toast.makeText(requireContext(), "Najpierw stwórz kategorię!", Toast.LENGTH_LONG).show()
+            }
+            else if(selectedDate == null || selectedTime == null)
             {
                 Toast.makeText(requireContext(), "Nie ustalono daty i godziny!", Toast.LENGTH_LONG).show()
             }
