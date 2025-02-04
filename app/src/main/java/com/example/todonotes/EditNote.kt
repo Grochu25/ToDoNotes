@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProvider
 import com.example.todonotes.databinding.FragmentEditNotesBinding
@@ -60,6 +61,9 @@ class EditNote : Fragment() {
             editNoteViewMode.deleteNote()
             requireActivity().supportFragmentManager.popBackStack()
         }
+
+        requireActivity().findViewById<TextView>(R.id.selectedDateTimeText).text =
+            "Wybrana data i godzina: ${editNoteViewMode.date.value} ${editNoteViewMode.time.value}"
 
         (requireActivity() as MainActivity).updateToolbarTitle("Edytuj notatkę")
 

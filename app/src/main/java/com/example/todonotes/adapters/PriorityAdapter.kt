@@ -12,7 +12,11 @@ import com.example.todonotes.R
 import com.example.todonotes.repositories.Note
 import java.time.format.DateTimeFormatter
 
-class PriorityAdapter(private val items: List<Note>, private val priorities: List<Int>, private var onClickListener: (Note) -> Unit) :
+class PriorityAdapter(private val items: List<Note>,
+                      private val priorities: List<Int>,
+                      private var onClickListener: (Note) -> Unit,
+                      private var favoureListener: (Note) -> Unit,
+                      private var unfavoureListener: (Note) -> Unit) :
     RecyclerView.Adapter<PriorityAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -35,6 +39,8 @@ class PriorityAdapter(private val items: List<Note>, private val priorities: Lis
         holder.remindText.text = title
         holder.remindDateText.text = remindDate
 
+
+
         holder.itemView.setOnClickListener{
             onClickListener(items[position])
         }
@@ -44,9 +50,11 @@ class PriorityAdapter(private val items: List<Note>, private val priorities: Lis
             if (!currentColor) {
                 holder.starButton.setImageResource(R.drawable.full_star)
                 holder.starButton.tag = true
+                favoureListener(items[position])
             } else {
                 holder.starButton.setImageResource(R.drawable.outline_star)
                 holder.starButton.tag = false
+                unfavoureListener(items[position])
             }
         }
 

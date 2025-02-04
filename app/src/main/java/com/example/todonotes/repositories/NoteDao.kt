@@ -58,4 +58,8 @@ interface NoteDao {
 
     @Update
     fun update(notatka: Note)
+
+    @Transaction
+    @Query("UPDATE note SET isFavorite = :favour WHERE noteId == :noteId")
+    fun updateFavour(noteId: Int, favour: Boolean)
 }

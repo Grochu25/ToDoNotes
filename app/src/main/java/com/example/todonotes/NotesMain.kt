@@ -54,21 +54,27 @@ class NotesMain : Fragment() {
         highPriorityList.adapter = PriorityAdapter(
             notesMainViewModel.highPriorityItems.value ?: emptyList(),
             List(notesMainViewModel.highPriorityItems.value?.size ?: 0) { 1 },
-            noteDetails
+            noteDetails,
+            notesMainViewModel.favourTheNote,
+            notesMainViewModel.unfavourTheNote
         )
 
         mediumPriorityList.layoutManager = LinearLayoutManager(context)
         mediumPriorityList.adapter = PriorityAdapter(
             notesMainViewModel.mediumPriorityItems.value ?: emptyList(),
             List(notesMainViewModel.mediumPriorityItems.value?.size ?: 0) { 2 },
-            noteDetails
+            noteDetails,
+            notesMainViewModel.favourTheNote,
+            notesMainViewModel.unfavourTheNote
         )
 
         lowPriorityList.layoutManager = LinearLayoutManager(context)
         lowPriorityList.adapter = PriorityAdapter(
             notesMainViewModel.lowPriorityItems.value ?: emptyList(),
             List(notesMainViewModel.lowPriorityItems.value?.size ?: 0) { 3 },
-            noteDetails
+            noteDetails,
+            notesMainViewModel.favourTheNote,
+            notesMainViewModel.unfavourTheNote
         )
 
         val mainCategoryAdapter = MainCategoryAdapter(
@@ -162,17 +168,23 @@ class NotesMain : Fragment() {
         highPriorityList.adapter = PriorityAdapter(
             notesMainViewModel.highPriorityItems.value ?: emptyList(),
             List(notesMainViewModel.highPriorityItems.value?.size ?: 0) { 1 },
-            noteDetails
+            noteDetails,
+            notesMainViewModel.favourTheNote,
+            notesMainViewModel.unfavourTheNote
         )
         mediumPriorityList.adapter = PriorityAdapter(
             notesMainViewModel.mediumPriorityItems.value ?: emptyList(),
             List(notesMainViewModel.mediumPriorityItems.value?.size ?: 0) { 2 },
-            noteDetails
+            noteDetails,
+            notesMainViewModel.favourTheNote,
+            notesMainViewModel.unfavourTheNote
         )
         lowPriorityList.adapter = PriorityAdapter(
             notesMainViewModel.lowPriorityItems.value ?: emptyList(),
             List(notesMainViewModel.lowPriorityItems.value?.size ?: 0) { 3 },
-            noteDetails
+            noteDetails,
+            notesMainViewModel.favourTheNote,
+            notesMainViewModel.unfavourTheNote
         )
     }
 

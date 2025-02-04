@@ -77,6 +77,15 @@ class NotesMainViewModel : ViewModel()
 
     }
 
+    val favourTheNote: (Note) -> Unit =
+    {
+        Dependencies.noteDao.updateFavour(it.noteId, true)
+    }
+
+    val unfavourTheNote: (Note) -> Unit =
+    {
+        Dependencies.noteDao.updateFavour(it.noteId, false)
+    }
 
     class Factory() : ViewModelProvider.Factory
     {

@@ -51,6 +51,7 @@
             android:id="@+id/starButton"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:visibility="gone"
             android:background="@android:color/transparent"
             android:src="@drawable/outline_star"
             android:contentDescription="@drawable/outline_star" />

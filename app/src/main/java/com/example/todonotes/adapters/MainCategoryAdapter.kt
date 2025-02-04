@@ -45,9 +45,14 @@ class MainCategoryAdapter(
             holder.categoryButton.setTextColor(Color.WHITE)
         }
 
-        holder.categoryButton.setOnClickListener {
-            onCategoryClick(category)
-        }
+        //TODO tutaj jakoś wyszarzyć pozostałe kategorie
+//        holder.categoryButton.setOnClickListener {
+//            onCategoryClick(category)
+//            items.forEach {
+//                if(it.categoryId != items[position].categoryId)
+//                    d
+//            }
+//        }
     }
 
     override fun getItemCount(): Int = items.size
