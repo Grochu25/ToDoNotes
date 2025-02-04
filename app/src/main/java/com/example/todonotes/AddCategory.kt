@@ -53,7 +53,6 @@ class AddCategory : Fragment() {
             }
         }
 
-
         colorRedButton.setOnClickListener {
             addCategoryViewModel.categoryColor.value = 0xFF975454.toInt()
             selectButton(colorRedButton, colorGreenButton, colorBlueButton)
@@ -73,6 +72,13 @@ class AddCategory : Fragment() {
         val cancelButton = view.findViewById<Button>(R.id.cancelButton)
 
         saveButton.setOnClickListener {
+            val categoryName = addCategoryViewModel.categoryName.value?.trim() ?: ""
+
+            if (categoryName.isEmpty()) {
+                Toast.makeText(requireContext(), "Nazwa kategorii nie może być pusta!", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
+
             if(addCategoryViewModel.canAdd()) {
                 addCategoryViewModel.addCategory()
                 Toast.makeText(requireContext(), "Dodano poprawnie kategorię!", Toast.LENGTH_SHORT)
