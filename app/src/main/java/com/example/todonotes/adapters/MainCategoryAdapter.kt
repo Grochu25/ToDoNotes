@@ -2,6 +2,7 @@ package com.example.todonotes.adapters
 
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,8 @@ class MainCategoryAdapter(
     private val items: List<Category>,
     private val onCategoryClick: (Category) -> Unit = {}
 ) : RecyclerView.Adapter<MainCategoryAdapter.ViewHolder>() {
+
+    var mBoundViewHolders = HashSet<MainCategoryAdapter.ViewHolder>()
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val categoryButton: Button = view.findViewById(R.id.categoryButton)
@@ -34,6 +37,7 @@ class MainCategoryAdapter(
         if (category.categoryId == -1) {
             if (drawable is GradientDrawable) {
                 drawable.setColor(Color.parseColor("#D3D3D3"))
+                holder.categoryButton.alpha = 0.3F
                 holder.categoryButton.background = drawable
             }
             holder.categoryButton.setTextColor(Color.BLACK)
@@ -45,15 +49,22 @@ class MainCategoryAdapter(
             holder.categoryButton.setTextColor(Color.WHITE)
         }
 
-        //TODO tutaj jakoś wyszarzyć pozostałe kategorie
-//        holder.categoryButton.setOnClickListener {
-//            onCategoryClick(category)
-//            items.forEach {
-//                if(it.categoryId != items[position].categoryId)
-//                    d
-//            }
-//        }
+        holder.categoryButton.setOnClickListener {
+            view ->
+            onCategoryClick(category)
+            resetColors()
+            view.alpha = 0.3F
+        }
+
+        mBoundViewHolders.add(holder)
     }
 
     override fun getItemCount(): Int = items.size
+
+    fun resetColors()
+    {
+        mBoundViewHolders.forEach {
+            it.categoryButton.alpha = 1.0F
+        }
+    }
 }

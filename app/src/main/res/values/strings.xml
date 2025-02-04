@@ -4,7 +4,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="appwidget_text">Przykład</string>
     <string name="add_widget">Dodaj Widget</string>
-    <string name="app_widget_description">To jest opis widgetu</string>
+    <string name="app_widget_description">Ten widget wyświetla najważniejsze notatki</string>
     <string name="empty_view_text">Brak ważnych notatek</string>
     <string name="important_notes">Najważniejsze notatki</string>
     <string name="sort_by_date_asc">Data rosnąco</string>

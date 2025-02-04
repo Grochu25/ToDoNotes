@@ -58,9 +58,9 @@ class MainActivity : AppCompatActivity() {
         Dependencies.categoryDao = NotesDatabase.getInstance(this).categoryDao()
 
 
-        if(Dependencies.categoryDao.getAll().isEmpty())
-            Dependencies.categoryDao.insertAll(Category(0, "Szkoła", Color.RED))
-        val kategorie: List<Category> = Dependencies.categoryDao.getAll()
+//        if(Dependencies.categoryDao.getAll().isEmpty())
+//            Dependencies.categoryDao.insertAll(Category(0, "Szkoła", Color.RED))
+//        val kategorie: List<Category> = Dependencies.categoryDao.getAll()
 
     }
     override fun onSupportNavigateUp(): Boolean {
