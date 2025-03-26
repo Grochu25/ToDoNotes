@@ -139,6 +139,7 @@ class MainActivity : AppCompatActivity() {
             else -> {
                 requestPermissionLauncher.launch(Manifest.permission.USE_EXACT_ALARM)
                 requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                Log.v("mango", "mango")
             }}
     }
 }
